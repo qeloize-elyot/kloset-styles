@@ -38,24 +38,25 @@ kloset-styles/
 │   │   ├── login/
 │   │   └── cadastro/
 │   ├── (dashboard)/
-│   │   ├── page.tsx
+│   │   ├── layout.tsx
+│   │   ├── dashboard/
 │   │   ├── analise/
 │   │   ├── guarda-roupa/
 │   │   ├── looks/
 │   │   └── perfil/
-│   ├── api/
-│   └── layout.tsx
-├── components/
-│   ├── ui/
-│   ├── icons/
-│   └── layout/
+│   ├── page.tsx          # Landing page
+│   ├── layout.tsx
+│   └── globals.css
 ├── lib/
 │   ├── supabase/
-│   ├── ai/
-│   └── utils/
+│   │   ├── client.ts
+│   │   ├── server.ts
+│   │   └── middleware.ts
+│   └── utils.ts
 ├── types/
-├── public/
-│   └── logo/
+│   └── index.ts
+├── middleware.ts
+├── .env.example
 └── README.md
 ```
 
@@ -68,7 +69,7 @@ kloset-styles/
    ```bash
    npm install
    ```
-3. Configure as variáveis de ambiente (`.env.local`):
+3. Configure as variáveis de ambiente (copie `.env.example` para `.env.local`):
    ```
    NEXT_PUBLIC_SUPABASE_URL=
    NEXT_PUBLIC_SUPABASE_ANON_KEY=
@@ -84,7 +85,17 @@ kloset-styles/
 
 ## Status atual
 
-Projeto em fase inicial de estrutura.
+- [x] Landing page
+- [x] Estrutura de pastas (auth + dashboard)
+- [x] Páginas de Login e Cadastro (UI)
+- [x] Layout do dashboard com navegação
+- [x] Páginas placeholder: Análise, Guarda-roupa, Looks, Perfil
+- [x] Tipos TypeScript principais
+- [x] Clientes Supabase (browser + server + middleware)
+- [ ] Integração real de autenticação com Supabase
+- [ ] Análise de imagem com Gemini
+- [ ] CRUD de peças no guarda-roupa
+- [ ] Gerador de looks funcional
 
 ---
 
