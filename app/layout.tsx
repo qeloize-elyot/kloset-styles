@@ -1,16 +1,26 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Playfair_Display, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-serif",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+});
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Kloset Styles",
+  title: "Kloset Styles | Curadoria & Guarda-Roupa Digital",
   description:
-    "Seu guarda-roupa, suas cores, suas soluções. Analise seu subtom e monte looks com as peças que você já tem.",
+    "Organize suas peças, construa cápsulas inteligentes e descubra novas combinações todos os dias.",
 };
 
 export default function RootLayout({
@@ -19,8 +29,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      <body className={`${inter.variable} font-sans`}>
+    <html lang="pt-BR" className={`${playfair.variable} ${jakarta.variable}`}>
+      <body className="min-h-screen flex flex-col bg-[#FAF8F5] text-[#181715] selection:bg-[#B85D3B] selection:text-white">
         {children}
       </body>
     </html>
