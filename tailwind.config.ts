@@ -10,16 +10,17 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          primary: "#5B21B6",
-          secondary: "#F97316",
-          accent: "#14B8A6",
-          dark: "#18181B",
-          muted: "#71717A",
-          light: "#F4F4F5",
+          primary: "#B85D3B",
+          secondary: "#181715",
+          accent: "#F2EDE4",
+          dark: "#181715",
+          muted: "#6E6A63",
+          light: "#FAF8F5",
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
       },
     },
   },
