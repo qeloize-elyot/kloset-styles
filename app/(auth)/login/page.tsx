@@ -11,9 +11,7 @@ export default function LoginPage() {
   async function handleSubmit(formData: FormData) {
     setLoading(true);
     setError(null);
-
     const result = await login(formData);
-
     if (result?.error) {
       setError(result.error);
       setLoading(false);
@@ -21,45 +19,69 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 bg-brand-light/40">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.46a1 1 0 0 0 .99.85H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.85l.58-3.46a2 2 0 0 0-1.34-2.23z" />
-              </svg>
-            </div>
-            <span className="font-semibold text-lg text-brand-dark">Kloset Styles</span>
+    <div className="min-h-screen flex bg-[#FAF8F5]">
+      {/* Lado esquerdo - visual */}
+      <div className="hidden lg:flex lg:w-[45%] relative bg-[#181715] overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#2C221E] via-[#181715] to-[#1a1512]" />
+        <div className="absolute top-1/4 -left-20 w-80 h-80 rounded-full bg-[#B85D3B]/20 blur-[100px]" />
+        <div className="absolute bottom-1/4 -right-10 w-64 h-64 rounded-full bg-[#B85D3B]/10 blur-[80px]" />
+
+        <div className="relative z-10 flex flex-col justify-between p-12 w-full">
+          <Link href="/" className="flex items-center gap-3">
+            <span className="w-9 h-9 rounded-full bg-[#FAF8F5] text-[#181715] flex items-center justify-center font-serif italic text-lg">
+              K
+            </span>
+            <span className="font-serif text-xl text-[#FAF8F5]">
+              Kloset <span className="italic text-[#B85D3B]">Styles</span>
+            </span>
           </Link>
-          <h1 className="text-2xl font-semibold text-brand-dark">Entrar</h1>
-          <p className="mt-2 text-sm text-brand-muted">
-            Acesse sua conta para continuar
+
+          <div className="space-y-6 max-w-sm">
+            <h2 className="font-serif text-4xl text-[#FAF8F5] leading-tight">
+              Seu estilo,{" "}
+              <span className="italic text-[#B85D3B]">organizado</span>.
+            </h2>
+            <p className="text-[#A09A92] text-sm leading-relaxed">
+              Entre na sua conta e continue montando looks com as peças que você já tem.
+            </p>
+          </div>
+
+          <p className="text-xs text-[#6E6A63]">
+            © {new Date().getFullYear()} Kloset Styles
           </p>
         </div>
+      </div>
 
-        <div className="bg-white border border-zinc-100 rounded-2xl p-8 shadow-sm">
+      {/* Lado direito - formulário */}
+      <div className="flex-1 flex items-center justify-center px-6 py-12">
+        <div className="w-full max-w-[400px]">
+          <div className="lg:hidden mb-10">
+            <Link href="/" className="flex items-center gap-2.5">
+              <span className="w-8 h-8 rounded-full bg-[#181715] text-[#FAF8F5] flex items-center justify-center font-serif italic text-base">
+                K
+              </span>
+              <span className="font-serif text-xl text-[#181715]">
+                Kloset <span className="italic text-[#B85D3B]">Styles</span>
+              </span>
+            </Link>
+          </div>
+
+          <div className="mb-8">
+            <h1 className="font-serif text-3xl text-[#181715]">Entrar</h1>
+            <p className="mt-2 text-sm text-[#6E6A63]">
+              Acesse sua conta para continuar
+            </p>
+          </div>
+
           <form action={handleSubmit} className="space-y-5">
             {error && (
-              <div className="bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl px-4 py-3">
+              <div className="bg-red-50 border border-red-100 text-red-600 text-sm rounded-2xl px-4 py-3">
                 {error}
               </div>
             )}
 
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-brand-dark mb-1.5"
-              >
+            <div className="space-y-1.5">
+              <label htmlFor="email" className="block text-xs font-medium uppercase tracking-wider text-[#6E6A63]">
                 E-mail
               </label>
               <input
@@ -67,16 +89,13 @@ export default function LoginPage() {
                 name="email"
                 type="email"
                 placeholder="seu@email.com"
-                className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition"
+                className="w-full px-4 py-3.5 rounded-2xl border border-[#E5DFD5] bg-white text-sm text-[#181715] placeholder:text-[#A09A92] focus:outline-none focus:ring-2 focus:ring-[#B85D3B]/30 focus:border-[#B85D3B] transition"
                 required
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-brand-dark mb-1.5"
-              >
+            <div className="space-y-1.5">
+              <label htmlFor="password" className="block text-xs font-medium uppercase tracking-wider text-[#6E6A63]">
                 Senha
               </label>
               <input
@@ -84,7 +103,7 @@ export default function LoginPage() {
                 name="password"
                 type="password"
                 placeholder="••••••••"
-                className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition"
+                className="w-full px-4 py-3.5 rounded-2xl border border-[#E5DFD5] bg-white text-sm text-[#181715] placeholder:text-[#A09A92] focus:outline-none focus:ring-2 focus:ring-[#B85D3B]/30 focus:border-[#B85D3B] transition"
                 required
               />
             </div>
@@ -92,18 +111,15 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-brand-primary text-white py-2.5 rounded-xl font-medium hover:bg-brand-primary/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full bg-[#181715] text-[#FAF8F5] py-3.5 rounded-full font-medium text-sm hover:bg-[#B85D3B] transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
             >
               {loading ? "Entrando..." : "Entrar"}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-brand-muted">
+          <p className="mt-8 text-center text-sm text-[#6E6A63]">
             Não tem conta?{" "}
-            <Link
-              href="/cadastro"
-              className="font-medium text-brand-primary hover:underline"
-            >
+            <Link href="/cadastro" className="font-medium text-[#B85D3B] hover:underline">
               Criar conta
             </Link>
           </p>
