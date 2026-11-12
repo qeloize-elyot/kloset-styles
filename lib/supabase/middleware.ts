@@ -14,22 +14,26 @@ export async function updateSession(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet: { name: string; value: string; options?: any }[]) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          );
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach((cookie) => {
+            request.cookies.set(cookie.name, cookie.value);
+          });
           supabaseResponse = NextResponse.next({
             request,
           });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          );
+          cookiesToSet.forEach((cookie) => {
+            supabaseResponse.cookies.set(
+              cookie.name,
+              cookie.value,
+              cookie.options
+            );
+          });
         },
       },
     }
   );
 
-  // Refreshing the auth token
+  // Atualiza o token de autenticação se necessário
   await supabase.auth.getUser();
 
   return supabaseResponse;
