@@ -1,257 +1,310 @@
+"use client";
+
+import React, { useState } from "react";
 import Link from "next/link";
 
-export default function HomePage() {
-  return (
-    <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="w-full border-b border-zinc-100">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.46a1 1 0 0 0 .99.85H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.85l.58-3.46a2 2 0 0 0-1.34-2.23z" />
-              </svg>
-            </div>
-            <span className="font-semibold text-lg tracking-tight text-brand-dark">
-              Kloset Styles
-            </span>
-          </div>
+interface StylePreset {
+  id: string;
+  label: string;
+  subtitle: string;
+  occasion: string;
+  harmony: string;
+  palette: { name: string; hex: string }[];
+  pieces: {
+    slot: string;
+    name: string;
+    fabric: string;
+    tone: string;
+    hex: string;
+  }[];
+}
 
-          <nav className="hidden sm:flex items-center gap-8 text-sm text-brand-muted">
-            <a href="#como-funciona" className="hover:text-brand-dark transition-colors">
-              Como funciona
+const INTERACTIVE_STYLES: StylePreset[] = [
+  {
+    id: "alfaiataria",
+    label: "Alfaiataria Desconstruída",
+    subtitle: "Equilíbrio entre estrutura clássica e leveza contemporânea.",
+    occasion: "Trabalho Criativo & Reuniões",
+    harmony: "Monocromático Quente & Neutros",
+    palette: [
+      { name: "Carvão", hex: "#181715" },
+      { name: "Areia", hex: "#D8CFC2" },
+      { name: "Terracota", hex: "#B85D3B" },
+      { name: "Off-White", hex: "#FAF8F5" },
+    ],
+    pieces: [
+      {
+        slot: "Sobreposição",
+        name: "Blazer Oversized em Linho Espanhol",
+        fabric: "100% Linho • Corte Reto",
+        tone: "Areia Natural",
+        hex: "#D8CFC2",
+      },
+      {
+        slot: "Base Superior",
+        name: "Camiseta Gola Alta Canelada",
+        fabric: "Algodão Pima Peruano",
+        tone: "Preto Carvão",
+        hex: "#181715",
+      },
+      {
+        slot: "Inferior",
+        name: "Calça Pantalona de Pregas Duplas",
+        fabric: "Gabardine Leve",
+        tone: "Off-White",
+        hex: "#F2EDE4",
+      },
+      {
+        slot: "Calçado & Acessório",
+        name: "Mocassim Tratorado + Cinto Fivela Dourada",
+        fabric: "Couro Legítimo",
+        tone: "Terracota Escuro",
+        hex: "#8C4327",
+      },
+    ],
+  },
+  {
+    id: "minimalismo",
+    label: "Minimalismo Noturno",
+    subtitle: "Silhuetas alongadas e contraste sutil de texturas nobres.",
+    occasion: "Jantares, Vernissages & Eventos",
+    harmony: "Alto Contraste Sobrio",
+    palette: [
+      { name: "Ônix", hex: "#121212" },
+      { name: "Chumbo", hex: "#3A3835" },
+      { name: "Café", hex: "#4A3228" },
+      { name: "Champanhe", hex: "#E6DEC8" },
+    ],
+    pieces: [
+      {
+        slot: "Sobreposição",
+        name: "Casaco Longo Estruturado",
+        fabric: "Lã Fria Italiana",
+        tone: "Ônix Profundo",
+        hex: "#121212",
+      },
+      {
+        slot: "Base Superior",
+        name: "Camisa de Seda com Botões Ocultos",
+        fabric: "Seda Pura Acetinada",
+        tone: "Champanhe",
+        hex: "#E6DEC8",
+      },
+      {
+        slot: "Inferior",
+        name: "Calça Cigarrete Cintura Alta",
+        fabric: "Crepe de Alfaiataria",
+        tone: "Chumbo",
+        hex: "#3A3835",
+      },
+      {
+        slot: "Calçado & Acessório",
+        name: "Bota Bico Fino + Bolsa Geométrica",
+        fabric: "Couro Pelica",
+        tone: "Café Expresso",
+        hex: "#4A3228",
+      },
+    ],
+  },
+  {
+    id: "urbano",
+    label: "Essencial Fim de Semana",
+    subtitle: "Conforto absoluto com curadoria estética para dias ao ar livre.",
+    occasion: "Brunch, Viagens & Passeios",
+    harmony: "Tons Terrosos & Botânicos",
+    palette: [
+      { name: "Oliva", hex: "#5A6650" },
+      { name: "Cru", hex: "#EFECE6" },
+      { name: "Camurça", hex: "#C29B77" },
+      { name: "Denim", hex: "#2C3E50" },
+    ],
+    pieces: [
+      {
+        slot: "Sobreposição",
+        name: "Jaqueta Utilitária com Bolsos Frontais",
+        fabric: "Sarja Pesada Peletizada",
+        tone: "Verde Oliva",
+        hex: "#5A6650",
+      },
+      {
+        slot: "Base Superior",
+        name: "Tricô Trama Aberta Ponto Inglês",
+        fabric: "Fio de Algodão Orgânico",
+        tone: "Algodão Cru",
+        hex: "#EFECE6",
+      },
+      {
+        slot: "Inferior",
+        name: "Jeans Vintage Lavagem Clássica",
+        fabric: "Denim Selvagem 13oz",
+        tone: "Azul Índigo",
+        hex: "#2C3E50",
+      },
+      {
+        slot: "Calçado & Acessório",
+        name: "Tênis Retrô Solado Gum + Óculos Tartaruga",
+        fabric: "Camurça & Lona",
+        tone: "Caramelo Suave",
+        hex: "#C29B77",
+      },
+    ],
+  },
+];
+
+const CAPSULE_CARDS = [
+  {
+    code: "CAP—01",
+    season: "Outono / Inverno",
+    title: "Cápsula Essencial de Trabalho",
+    piecesCount: "12 Peças",
+    outfitsCount: "34 Combinações",
+    description:
+      "Construída sobre bases neutras com pontos focais em terracota e caramelo. Ideal para quem busca autoridade visual sem rigidez.",
+    highlights: [
+      "Trench Coat Impermeável Areia",
+      "2 Blazers de Corte Arquitetônico",
+      "3 Calças de Alfaiataria Fluida",
+      "4 Bases em Algodão Pima e Seda",
+    ],
+  },
+  {
+    code: "CAP—02",
+    season: "Todas as Estações",
+    title: "Mala Inteligente de 4 Dias",
+    piecesCount: "9 Peças",
+    outfitsCount: "18 Combinações",
+    description:
+      "Planejada para caber apenas na bagagem de mão, garantindo looks distintos do café da manhã a um jantar especial sem amassar.",
+    highlights: [
+      "Conjunto Monocromático em Linho Misto",
+      "Tricô Leve para Variação Térmica",
+      "Jeans Reto Coringa Escuro",
+      "Dupla de Calçados Versáteis",
+    ],
+  },
+  {
+    code: "CAP—03",
+    season: "Primavera / Verão",
+    title: "Minimalismo Solar & Fibras Naturais",
+    piecesCount: "10 Peças",
+    outfitsCount: "26 Combinações",
+    description:
+      "Foco total em respirabilidade, tecidos não sintéticos e silhuetas amplas que valorizam o movimento e o frescor.",
+    highlights: [
+      "Camisaria Oversized 100% Linho",
+      "Bermuda de Alfaiataria com Pregas",
+      "Regatas Estruturadas Caneladas",
+      "Sandália Minimalista em Couro Cru",
+    ],
+  },
+];
+
+const FAQS = [
+  {
+    question: "Como funciona a organização do guarda-roupa no Kloset Styles?",
+    answer:
+      "Você cadastra suas peças principais informando categoria (superiores, inferiores, sobreposições ou calçados), cor predominante e tecido. A plataforma organiza tudo em uma grade editorial limpa e permite gerar combinações automáticas com um clique.",
+  },
+  {
+    question: "Preciso tirar foto de todas as minhas roupas para começar?",
+    answer:
+      "Não! O Kloset Styles foi desenhado com fichas catalográficas de cor e tecido. Você pode cadastrar suas peças rapidamente apenas pelo nome, categoria e tom cromático, mantendo o visual do site sempre harmônico e sem fotos bagunçadas.",
+  },
+  {
+    question: "O que é um Armário-Cápsula e como o site ajuda a criar um?",
+    answer:
+      "Um armário-cápsula é um conjunto reduzido de peças altamente combináveis entre si. No nosso painel você visualiza facilmente quais cores e categorias estão em excesso ou em falta, multiplicando seus looks sem precisar comprar mais roupas.",
+  },
+];
+
+export default function HomePage() {
+  const [selectedStyleIndex, setSelectedStyleIndex] = useState(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  const currentStyle = INTERACTIVE_STYLES[selectedStyleIndex];
+
+  return (
+    <div className="min-h-screen flex flex-col justify-between bg-[#FAF8F5] text-[#181715]">
+      {/* Faixa Superior de Anúncio Editorial */}
+      <div className="bg-[#181715] text-[#FAF8F5] text-[11px] uppercase tracking-[0.22em] py-2.5 px-4 text-center">
+        Kloset Styles Atelier • Curadoria Digital de Guarda-Roupa &amp; Estilo Pessoal
+      </div>
+
+      {/* Cabeçalho Principal */}
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-[#FAF8F5]/90 border-b border-[#E5DFD5]">
+        <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 group">
+            <span className="w-10 h-10 rounded-full bg-[#181715] text-[#FAF8F5] flex items-center justify-center font-serif italic text-xl transition-transform group-hover:scale-105">
+              K
+            </span>
+            <div className="flex flex-col">
+              <span className="font-serif text-2xl tracking-tight leading-none">
+                Kloset <span className="italic text-[#B85D3B]">Styles</span>
+              </span>
+              <span className="text-[10px] uppercase tracking-[0.2em] text-[#6E6A63] mt-1">
+                Digital Wardrobe
+              </span>
+            </div>
+          </Link>
+
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[#6E6A63]">
+            <a href="#provador" className="hover:text-[#181715] transition-colors">
+              Simulador de Looks
             </a>
-            <a href="#recursos" className="hover:text-brand-dark transition-colors">
-              Recursos
+            <a href="#metodo" className="hover:text-[#181715] transition-colors">
+              O Método
+            </a>
+            <a href="#capsulas" className="hover:text-[#181715] transition-colors">
+              Coleções-Cápsula
+            </a>
+            <a href="#faq" className="hover:text-[#181715] transition-colors">
+              Dúvidas
             </a>
           </nav>
 
           <div className="flex items-center gap-3">
             <Link
               href="/login"
-              className="text-sm font-medium text-brand-muted hover:text-brand-dark transition-colors"
+              className="px-4 py-2 text-sm font-medium text-[#181715] hover:text-[#B85D3B] transition-colors"
             >
               Entrar
             </Link>
             <Link
-              href="/cadastro"
-              className="text-sm font-medium bg-brand-primary text-white px-4 py-2 rounded-lg hover:bg-brand-primary/90 transition-colors"
+              href="/closet"
+              className="px-5 py-2.5 rounded-full bg-[#181715] text-[#FAF8F5] text-sm font-medium hover:bg-[#B85D3B] transition-colors"
             >
-              Criar conta
+              Abrir Meu Closet →
             </Link>
           </div>
         </div>
       </header>
 
-      {/* Hero */}
       <main className="flex-1">
-        <section className="max-w-6xl mx-auto px-6 pt-20 pb-24">
-          <div className="max-w-2xl">
-            <p className="text-sm font-medium text-brand-secondary mb-4 tracking-wide uppercase">
-              Guarda-roupa digital inteligente
-            </p>
-            <h1 className="text-4xl sm:text-5xl font-semibold text-brand-dark leading-tight tracking-tight text-balance">
-              Seu guarda-roupa, suas cores, suas soluções.
-            </h1>
-            <p className="mt-6 text-lg text-brand-muted leading-relaxed max-w-xl">
-              Analise seu subtom de pele, descubra as cores que combinam com você
-              e monte looks práticos com as peças que você já tem — considerando
-              ocasião e clima.
-            </p>
+        {/* 1. HERO SECTION */}
+        <section className="max-w-6xl mx-auto px-6 pt-14 pb-20 md:pt-20 md:pb-28 border-b border-[#E5DFD5]">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-7 space-y-7">
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#F2EDE4] border border-[#E5DFD5] text-xs uppercase tracking-widest text-[#6E6A63]">
+                <span className="w-2 h-2 rounded-full bg-[#B85D3B]" />
+                Arquitetura de Estilo Inteligente
+              </div>
 
-            <div className="mt-10 flex flex-wrap gap-4">
-              <Link
-                href="/cadastro"
-                className="inline-flex items-center gap-2 bg-brand-primary text-white px-6 py-3 rounded-xl font-medium hover:bg-brand-primary/90 transition-colors"
-              >
-                Começar agora
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+              <h1 className="font-serif text-5xl md:text-6xl lg:text-[64px] leading-[1.06] tracking-tight">
+                Redescubra o poder das peças que{" "}
+                <span className="italic font-normal text-[#B85D3B]">
+                  você já possui.
+                </span>
+              </h1>
+
+              <p className="text-base md:text-lg text-[#6E6A63] max-w-xl leading-relaxed">
+                Mais do que um aplicativo de organização: o{" "}
+                <strong className="text-[#181715] font-medium">Kloset Styles</strong>{" "}
+                transforma seu guarda-roupa em um acervo visual digno de revista,
+                criando combinações instantâneas para cada ocasião do seu dia.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                <Link
+                  href="/closet"
+                  className="px-8 py-4 rounded-full bg-[#181715] text-[#FAF8F5] text-sm font-medium tracking-wide hover:bg-[#B85D3B] transition-all"
                 >
-                  <path d="M5 12h14" />
-                  <path d="m12 5 7 7-7 7" />
-                </svg>
-              </Link>
-              <a
-                href="#como-funciona"
-                className="inline-flex items-center gap-2 border border-zinc-200 text-brand-dark px-6 py-3 rounded-xl font-medium hover:bg-zinc-50 transition-colors"
-              >
-                Ver como funciona
-              </a>
-            </div>
-          </div>
-
-          {/* Color preview strip */}
-          <div className="mt-16 flex gap-3">
-            <div className="h-3 w-16 rounded-full bg-brand-primary" />
-            <div className="h-3 w-16 rounded-full bg-brand-secondary" />
-            <div className="h-3 w-16 rounded-full bg-brand-accent" />
-            <div className="h-3 w-16 rounded-full bg-zinc-300" />
-            <div className="h-3 w-16 rounded-full bg-zinc-800" />
-          </div>
-        </section>
-
-        {/* Como funciona */}
-        <section id="como-funciona" className="bg-brand-light/60 border-y border-zinc-100">
-          <div className="max-w-6xl mx-auto px-6 py-20">
-            <h2 className="text-2xl font-semibold text-brand-dark mb-12">
-              Como funciona
-            </h2>
-
-            <div className="grid sm:grid-cols-3 gap-10">
-              <div className="space-y-4">
-                <div className="w-10 h-10 rounded-xl bg-brand-primary/10 flex items-center justify-center">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#5B21B6"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
-                    <circle cx="12" cy="13" r="3" />
-                  </svg>
-                </div>
-                <h3 className="font-semibold text-brand-dark">1. Analise seu subtom</h3>
-                <p className="text-sm text-brand-muted leading-relaxed">
-                  Envie uma selfie e a IA identifica se seu subtom é quente, frio
-                  ou neutro, além do contraste e da estação de cores ideal.
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <div className="w-10 h-10 rounded-xl bg-brand-secondary/10 flex items-center justify-center">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#F97316"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.46a1 1 0 0 0 .99.85H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.85l.58-3.46a2 2 0 0 0-1.34-2.23z" />
-                  </svg>
-                </div>
-                <h3 className="font-semibold text-brand-dark">2. Cadastre suas peças</h3>
-                <p className="text-sm text-brand-muted leading-relaxed">
-                  Fotografe e registre as roupas que você já tem. Informe
-                  categoria, cor predominante e estilo de cada peça.
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <div className="w-10 h-10 rounded-xl bg-brand-accent/10 flex items-center justify-center">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#14B8A6"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M12 3v18" />
-                    <path d="m8 7 4-4 4 4" />
-                    <path d="M8 17h8" />
-                    <path d="M8 13h8" />
-                  </svg>
-                </div>
-                <h3 className="font-semibold text-brand-dark">3. Receba looks prontos</h3>
-                <p className="text-sm text-brand-muted leading-relaxed">
-                  Informe a ocasião e o clima. O sistema monta combinações
-                  reais com o que você já tem e mostra o que pode faltar.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Recursos */}
-        <section id="recursos" className="max-w-6xl mx-auto px-6 py-20">
-          <h2 className="text-2xl font-semibold text-brand-dark mb-12">
-            O que você consegue fazer
-          </h2>
-
-          <div className="grid sm:grid-cols-2 gap-6">
-            <div className="border border-zinc-100 rounded-2xl p-6 hover:border-brand-primary/30 transition-colors">
-              <h3 className="font-semibold text-brand-dark mb-2">Análise de cores</h3>
-              <p className="text-sm text-brand-muted leading-relaxed">
-                Descubra sua paleta pessoal e saiba quais tons valorizam sua
-                pele, cabelo e olhos.
-              </p>
-            </div>
-            <div className="border border-zinc-100 rounded-2xl p-6 hover:border-brand-secondary/30 transition-colors">
-              <h3 className="font-semibold text-brand-dark mb-2">Guarda-roupa organizado</h3>
-              <p className="text-sm text-brand-muted leading-relaxed">
-                Tenha todas as suas peças em um só lugar, com fotos e tags
-                fáceis de filtrar.
-              </p>
-            </div>
-            <div className="border border-zinc-100 rounded-2xl p-6 hover:border-brand-accent/30 transition-colors">
-              <h3 className="font-semibold text-brand-dark mb-2">Looks por ocasião e clima</h3>
-              <p className="text-sm text-brand-muted leading-relaxed">
-                Trabalho, casual, evento ou frio — o sistema considera o
-                contexto real do dia.
-              </p>
-            </div>
-            <div className="border border-zinc-100 rounded-2xl p-6 hover:border-zinc-300 transition-colors">
-              <h3 className="font-semibold text-brand-dark mb-2">Sugestões práticas</h3>
-              <p className="text-sm text-brand-muted leading-relaxed">
-                Não é só estética: você recebe combinações possíveis com o que
-                já possui e dicas do que falta.
-              </p>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-zinc-100">
-        <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-brand-primary flex items-center justify-center">
-              <svg
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.46a1 1 0 0 0 .99.85H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.85l.58-3.46a2 2 0 0 0-1.34-2.23z" />
-              </svg>
-            </div>
-            <span className="text-sm font-medium text-brand-dark">Kloset Styles</span>
-          </div>
-          <p className="text-xs text-brand-muted">
-            Seu guarda-roupa, suas cores, suas soluções.
-          </p>
-        </div>
-      </footer>
-    </div>
-  );
-}
