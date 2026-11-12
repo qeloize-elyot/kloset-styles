@@ -3,22 +3,13 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 40 20% 98%;
-    --foreground: 240 10% 4%;
-  }
-
-  * {
-    border-color: theme("colors.zinc.200");
-  }
-
   body {
-    @apply bg-[#FAFAF9] text-zinc-900 antialiased;
+    @apply bg-[#FAF8F5] text-[#181715] antialiased font-sans;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
   ::selection {
-    @apply bg-violet-200 text-violet-950;
+    @apply bg-[#B85D3B] text-white;
   }
 }
 
@@ -26,17 +17,8 @@
   .text-balance {
     text-wrap: balance;
   }
-
-  .gradient-text {
-    @apply bg-gradient-to-r from-violet-700 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent;
-  }
-
-  .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/40;
-  }
 }
 
-/* Scrollbar discreta */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -45,9 +27,9 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d8;
+  background: #D6CFC3;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #a1a1aa;
+  background: #B85D3B;
 }
