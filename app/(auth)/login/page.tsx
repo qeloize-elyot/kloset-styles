@@ -1,6 +1,25 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
+import { login } from "./actions";
 
 export default function LoginPage() {
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(formData: FormData) {
+    setLoading(true);
+    setError(null);
+
+    const result = await login(formData);
+
+    if (result?.error) {
+      setError(result.error);
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center px-6 bg-brand-light/40">
       <div className="w-full max-w-md">
@@ -29,7 +48,13 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-white border border-zinc-100 rounded-2xl p-8 shadow-sm">
-          <form className="space-y-5">
+          <form action={handleSubmit} className="space-y-5">
+            {error && (
+              <div className="bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl px-4 py-3">
+                {error}
+              </div>
+            )}
+
             <div>
               <label
                 htmlFor="email"
@@ -39,6 +64,7 @@ export default function LoginPage() {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="seu@email.com"
                 className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition"
@@ -55,6 +81,7 @@ export default function LoginPage() {
               </label>
               <input
                 id="password"
+                name="password"
                 type="password"
                 placeholder="••••••••"
                 className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-primary/30 focus:border-brand-primary transition"
@@ -64,9 +91,10 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              className="w-full bg-brand-primary text-white py-2.5 rounded-xl font-medium hover:bg-brand-primary/90 transition-colors"
+              disabled={loading}
+              className="w-full bg-brand-primary text-white py-2.5 rounded-xl font-medium hover:bg-brand-primary/90 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Entrar
+              {loading ? "Entrando..." : "Entrar"}
             </button>
           </form>
 
