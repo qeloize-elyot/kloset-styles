@@ -2,240 +2,243 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Camera,
+  Check,
+  ChevronDown,
+  CloudSun,
+  Palette,
+  Shirt,
+  Sparkles,
+} from "lucide-react";
 
 const INTERACTIVE_STYLES = [
   {
     id: "minimal",
-    label: "Minimalista Editorial",
+    label: "Minimalista",
     season: "Outono / Inverno",
-    occasion: "Trabalho Criativo & Reuniões",
+    occasion: "Trabalho e encontros",
     description:
-      "Cortes retos, tecidos estruturados e ausência de excessos. A elegância vem do contraste entre lã fria, algodão egípcio e couro fosco.",
+      "Linhas limpas, peças versáteis e uma cartela sofisticada. Um visual elegante sem precisar de excessos.",
     pieces: [
-      { category: "Terceira Peça", name: "Blazer Oversized Carvão", fabric: "Lã Fria Italiana", color: "#23211E" },
-      { category: "Base Superior", name: "Camisa Poplin Off-White", fabric: "100% Algodão", color: "#F5F2EB" },
-      { category: "Parte Inferior", name: "Calça Alfaiataria Pregas", fabric: "Crepe Estruturado", color: "#3A3632" },
-      { category: "Calçado & Acessório", name: "Mocassim Tratorado + Cinto", fabric: "Couro Café", color: "#4A3525" },
+      { category: "Terceira peça", name: "Blazer amplo", detail: "Alfaiataria", color: "#393044" },
+      { category: "Parte de cima", name: "Camisa off-white", detail: "Algodão", color: "#F2EEE7" },
+      { category: "Parte de baixo", name: "Calça reta", detail: "Corte clássico", color: "#776D83" },
+      { category: "Calçado", name: "Mocassim", detail: "Couro café", color: "#795A4A" },
     ],
-    palette: ["#23211E", "#F5F2EB", "#3A3632", "#B85D3B"],
+    palette: ["#393044", "#F2EEE7", "#776D83", "#B9A8C9"],
   },
   {
     id: "urbano",
-    label: "Casual Urbano",
-    season: "Meia-Estação",
-    occasion: "Dia a Dia & Café na Cidade",
+    label: "Casual urbano",
+    season: "Meia-estação",
+    occasion: "Dia a dia e passeios",
     description:
-      "Sobreposições leves e práticas para rotinas dinâmicas. Une o conforto do denim vintage com a sofisticação do tricô texturizado.",
+      "Conforto com personalidade: sobreposições leves, jeans e texturas que deixam a rotina mais interessante.",
     pieces: [
-      { category: "Terceira Peça", name: "Cardigan Tricô Ponto Grosso", fabric: "Algodão & Linho", color: "#D6CFC3" },
-      { category: "Base Superior", name: "T-Shirt Gola Alta Canelada", fabric: "Malha Premium", color: "#FAF8F5" },
-      { category: "Parte Inferior", name: "Jeans Reto Lavagem Clara", fabric: "Denim 13oz", color: "#7C8B99" },
-      { category: "Calçado & Acessório", name: "Sneaker Retrô Camurça", fabric: "Camurça Areia", color: "#C8B8A6" },
+      { category: "Terceira peça", name: "Cardigan de tricô", detail: "Trama macia", color: "#C8B8D9" },
+      { category: "Parte de cima", name: "T-shirt básica", detail: "Malha de algodão", color: "#F8F6F8" },
+      { category: "Parte de baixo", name: "Jeans reto", detail: "Denim azul", color: "#8EA2B8" },
+      { category: "Calçado", name: "Tênis casual", detail: "Camurça clara", color: "#C9B9A8" },
     ],
-    palette: ["#D6CFC3", "#FAF8F5", "#7C8B99", "#C8B8A6"],
+    palette: ["#C8B8D9", "#F8F6F8", "#8EA2B8", "#C9B9A8"],
   },
   {
     id: "noite",
-    label: "Noite & Galeria",
+    label: "Noite especial",
     season: "Atemporal",
-    occasion: "Jantares & Eventos Noturnos",
+    occasion: "Jantares e eventos",
     description:
-      "Jogos de luz e sombra em paleta escura com ponto focal em terracota queimado. Silhueta alongada e acabamento acetinado.",
+      "Uma composição marcante com contraste, movimento e detalhes que fazem o look parecer pensado nos mínimos pontos.",
     pieces: [
-      { category: "Terceira Peça", name: "Trench Coat Estruturado", fabric: "Gabardine Impermeável", color: "#181715" },
-      { category: "Base Superior", name: "Blusa Gola Degagê Terracota", fabric: "Seda Acetinada", color: "#B85D3B" },
-      { category: "Parte Inferior", name: "Calça Pantalona Cintura Alta", fabric: "Alfaiataria Fluida", color: "#181715" },
-      { category: "Calçado & Acessório", name: "Bota Bico Fino + Clutch", fabric: "Couro Envernizado", color: "#2C221E" },
+      { category: "Terceira peça", name: "Jaqueta estruturada", detail: "Acabamento fosco", color: "#25202D" },
+      { category: "Parte de cima", name: "Blusa acetinada", detail: "Toque suave", color: "#A887C8" },
+      { category: "Parte de baixo", name: "Calça pantalona", detail: "Caimento fluido", color: "#25202D" },
+      { category: "Calçado", name: "Bota clássica", detail: "Preto intenso", color: "#302635" },
     ],
-    palette: ["#181715", "#B85D3B", "#2C221E", "#E5DFD5"],
+    palette: ["#25202D", "#A887C8", "#302635", "#E9E2ED"],
   },
 ];
 
 const FAQS = [
   {
-    q: "Como funciona a organização do meu guarda-roupa?",
-    a: "Você cadastra suas peças por categoria (partes de cima, baixo, terceiras peças e calçados), define a cor predominante e cria combinações prontas para qualquer ocasião.",
+    q: "Como funciona o Kloset Styles?",
+    a: "Você organiza as peças que já tem, informa suas preferências e usa o gerador para encontrar combinações levando em conta a ocasião e o clima.",
   },
   {
-    q: "O Kloset Styles sugere combinações automaticamente?",
-    a: "Sim! Dentro do seu closet digital você conta com o Gerador de Looks, que cruza suas peças disponíveis para sugerir composições equilibradas na hora.",
+    q: "Preciso comprar roupas novas?",
+    a: "Não. A proposta é aproveitar melhor o que já existe no seu guarda-roupa e descobrir combinações que talvez ainda não tenham passado pela sua cabeça.",
   },
   {
-    q: "O que é um armário cápsula?",
-    a: "É uma seleção inteligente de peças versáteis que combinam entre si, permitindo multiplicar seus looks sem precisar comprar roupas novas toda semana.",
+    q: "O que é a análise de subtom?",
+    a: "É uma ferramenta de apoio para explorar cores que harmonizam com suas características e organizar uma paleta pessoal de referência.",
+  },
+];
+
+const FEATURES = [
+  {
+    icon: Camera,
+    number: "01",
+    title: "Descubra sua paleta",
+    description: "Explore seu subtom e encontre uma seleção de cores para usar como guia na hora de se vestir.",
+  },
+  {
+    icon: Shirt,
+    number: "02",
+    title: "Organize seu closet",
+    description: "Cadastre suas peças e transforme seu guarda-roupa em um acervo visual fácil de consultar.",
+  },
+  {
+    icon: Sparkles,
+    number: "03",
+    title: "Crie novas combinações",
+    description: "Receba ideias de looks com o que você já tem, considerando ocasião e clima.",
   },
 ];
 
 export default function HomePage() {
-  const [selectedStyleIndex, setSelectedStyleIndex] = useState(0);
+  const [selectedStyleIndex, setSelectedStyleIndex] = useState(1);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-
   const currentStyle = INTERACTIVE_STYLES[selectedStyleIndex];
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-[#FAF8F5] text-[#181715]">
-      {/* Faixa Superior de Anúncio Editorial */}
-      <div className="bg-[#181715] text-[#FAF8F5] text-[11px] uppercase tracking-[0.22em] py-2.5 px-4 text-center">
-        Kloset Styles Atelier • Curadoria Digital de Guarda-Roupa &amp; Estilo Pessoal
+    <div className="min-h-screen overflow-hidden bg-[#FCFAFF] text-[#261D35]">
+      <div className="bg-[#281C39] px-4 py-2.5 text-center text-[10px] font-semibold uppercase tracking-[0.2em] text-white/85 sm:text-[11px]">
+        Seu estilo começa com o que você já tem <span className="mx-2 text-[#CDB8F4]">✦</span> Conheça o Kloset Styles
       </div>
 
-      {/* Cabeçalho Principal */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-[#FAF8F5]/90 border-b border-[#E5DFD5]">
-        <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
-            <span className="w-9 h-9 rounded-full bg-[#181715] text-[#FAF8F5] flex items-center justify-center font-serif italic text-lg transition-transform group-hover:scale-105">
-              K
-            </span>
-            <span className="font-serif text-2xl tracking-tight font-medium">
-              Kloset <span className="italic text-[#B85D3B]">Styles</span>
+      <header className="sticky top-0 z-40 border-b border-[#ECE6F3] bg-[#FCFAFF]/90 backdrop-blur-xl">
+        <div className="ks-container flex h-[76px] items-center justify-between gap-4">
+          <Link href="/" className="flex shrink-0 items-center gap-3" aria-label="Kloset Styles - início">
+            <span className="flex h-10 w-10 items-center justify-center rounded-[14px] bg-[#6E43C8] font-serif text-[23px] italic text-white shadow-lg shadow-[#6E43C8]/20">K</span>
+            <span className="font-serif text-[21px] font-semibold tracking-[-0.04em] text-[#2A2039]">
+              Kloset <span className="italic text-[#7953C8]">Styles</span>
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8 text-sm text-[#6E6A63]">
-            <a href="#provador" className="hover:text-[#181715] transition-colors">
-              Provador Interativo
-            </a>
-            <a href="#metodo" className="hover:text-[#181715] transition-colors">
-              O Método
-            </a>
-            <a href="#faq" className="hover:text-[#181715] transition-colors">
-              Dúvidas
-            </a>
+          <nav className="hidden items-center gap-8 text-[13px] font-medium text-[#776C87] md:flex">
+            <a href="#como-funciona" className="transition-colors hover:text-[#6E43C8]">Como funciona</a>
+            <a href="#inspiracao" className="transition-colors hover:text-[#6E43C8]">Inspiração</a>
+            <a href="#duvidas" className="transition-colors hover:text-[#6E43C8]">Dúvidas</a>
           </nav>
 
-          <div className="flex items-center gap-3">
-            <Link
-              href="/login"
-              className="px-4 py-2 text-sm font-medium text-[#181715] hover:text-[#B85D3B] transition-colors"
-            >
-              Entrar
-            </Link>
-            <Link
-              href="/dashboard"
-              className="px-5 py-2.5 rounded-full bg-[#181715] text-[#FAF8F5] text-sm font-medium hover:bg-[#B85D3B] transition-colors shadow-sm"
-            >
-              Meu Closet →
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Link href="/login" className="hidden px-2 py-2 text-[13px] font-semibold text-[#5E526F] transition-colors hover:text-[#6E43C8] sm:block">Entrar</Link>
+            <Link href="/dashboard" className="inline-flex items-center gap-2 rounded-full bg-[#6E43C8] px-4 py-3 text-[12px] font-semibold text-white shadow-lg shadow-[#6E43C8]/20 transition-all hover:-translate-y-0.5 hover:bg-[#5934AC] sm:px-5 sm:text-[13px]">
+              Meu closet <ArrowUpRight size={15} />
             </Link>
           </div>
         </div>
       </header>
 
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="max-w-6xl mx-auto px-6 pt-16 pb-20 md:pt-24 md:pb-28">
-          <div className="grid md:grid-cols-12 gap-12 items-center">
-            <div className="md:col-span-7 space-y-7">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F2EDE4] border border-[#E5DFD5] text-xs uppercase tracking-widest text-[#6E6A63]">
-                <span className="w-2 h-2 rounded-full bg-[#B85D3B]" />
-                Seu Guarda-Roupa Digital Inteligente
+      <main>
+        <section className="ks-hero relative">
+          <div className="ks-container relative grid min-h-[640px] items-center gap-14 py-16 md:grid-cols-[1.02fr_0.98fr] md:py-20 lg:gap-20">
+            <div className="relative z-10 max-w-[620px]">
+              <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[#E5D9F4] bg-white/80 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[#7655B5] shadow-sm">
+                <Sparkles size={13} /> Seu guarda-roupa, de um jeito novo
               </div>
-
-              <h1 className="font-serif text-5xl md:text-7xl leading-[1.06] tracking-tight">
-                Redescubra a arte de vestir o que{" "}
-                <span className="italic font-normal text-[#B85D3B]">
-                  já é seu.
-                </span>
+              <h1 className="max-w-[650px] font-serif text-[clamp(3.4rem,7vw,6.1rem)] leading-[0.99] tracking-[-0.055em] text-[#2A2039]">
+                Vista-se de <span className="ks-heading-accent italic">você.</span>
+                <br />Todos os dias.
               </h1>
-
-              <p className="text-lg text-[#6E6A63] max-w-xl leading-relaxed">
-                Transforme seu armário em um acervo visual organizado. Crie cápsulas
-                por estação, planeje combinações em segundos e construa uma
-                identidade autêntica todos os dias.
+              <p className="mt-7 max-w-[490px] text-[15px] leading-8 text-[#766B84] sm:text-[17px]">
+                Seu estilo, suas peças e novas possibilidades. Organize seu closet, descubra suas cores e encontre combinações que fazem sentido para cada ocasião.
               </p>
-
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <Link
-                  href="/dashboard"
-                  className="px-8 py-4 rounded-full bg-[#181715] text-[#FAF8F5] text-sm font-medium tracking-wide hover:bg-[#B85D3B] transition-all shadow-md"
-                >
-                  Começar meu Closet Agora
+              <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+                <Link href="/dashboard" className="inline-flex items-center justify-center gap-3 rounded-full bg-[#6E43C8] px-7 py-4 text-[13px] font-semibold text-white shadow-xl shadow-[#6E43C8]/20 transition-all hover:-translate-y-1 hover:bg-[#5934AC]">
+                  Começar agora <ArrowRight size={16} />
                 </Link>
-                <a
-                  href="#provador"
-                  className="px-8 py-4 rounded-full border border-[#D6CFC3] text-sm font-medium hover:border-[#181715] transition-colors"
-                >
-                  Testar Provador de Estilo
+                <a href="#como-funciona" className="inline-flex items-center justify-center gap-2 rounded-full border border-[#DED3EB] bg-white/70 px-7 py-4 text-[13px] font-semibold text-[#514461] transition-colors hover:border-[#A98ED5] hover:bg-white">
+                  Conhecer a plataforma
                 </a>
+              </div>
+              <div className="mt-11 flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-[#EAE3F1] pt-6 text-[11px] font-medium text-[#8B8097]">
+                <span className="inline-flex items-center gap-2"><Check size={14} className="text-[#6E43C8]" /> Organize o que já tem</span>
+                <span className="inline-flex items-center gap-2"><Check size={14} className="text-[#6E43C8]" /> Explore sua paleta</span>
+                <span className="inline-flex items-center gap-2"><Check size={14} className="text-[#6E43C8]" /> Monte looks com praticidade</span>
               </div>
             </div>
 
-            {/* Card Editorial em Destaque */}
-            <div className="md:col-span-5">
-              <div className="rounded-3xl bg-[#F2EDE4] border border-[#E5DFD5] p-7 shadow-sm space-y-6">
-                <div className="flex items-center justify-between border-b border-[#E5DFD5] pb-4">
-                  <div>
-                    <p className="text-[11px] uppercase tracking-widest text-[#6E6A63]">
-                      Curadoria da Semana
-                    </p>
-                    <h2 className="font-serif text-2xl mt-1">
-                      Cápsula Essencial #01
-                    </h2>
-                  </div>
-                  <span className="px-3 py-1 rounded-full bg-[#FAF8F5] border border-[#E5DFD5] text-xs font-medium text-[#B85D3B]">
-                    12 Peças • 36 Looks
-                  </span>
-                </div>
-
-                <div className="space-y-3">
-                  {currentStyle.pieces.slice(0, 3).map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center justify-between p-3.5 rounded-2xl bg-[#FAF8F5] border border-[#E5DFD5]"
-                    >
-                      <div className="flex items-center gap-3">
-                        <span
-                          className="w-5 h-5 rounded-full border border-black/10 shrink-0"
-                          style={{ backgroundColor: item.color }}
-                        />
-                        <div>
-                          <p className="text-sm font-medium">{item.name}</p>
-                          <p className="text-xs text-[#6E6A63]">{item.category}</p>
-                        </div>
-                      </div>
-                      <span className="text-xs text-[#6E6A63]">{item.fabric}</span>
-                    </div>
+            <div className="relative mx-auto w-full max-w-[460px]">
+              <div className="ks-orbit ks-orbit-one" />
+              <div className="ks-orbit ks-orbit-two" />
+              <div className="ks-hero-photo-wrap">
+                <img
+                  src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80"
+                  alt="Pessoa em look editorial de moda"
+                />
+              </div>
+              <div className="ks-float-card ks-float-top">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#9A8EAA]">Paleta do dia</p>
+                <div className="mt-3 flex gap-2">
+                  {["#6E43C8", "#C8B8D9", "#F2EEE7", "#393044"].map((c) => (
+                    <span key={c} className="h-6 w-6 rounded-full border border-black/5" style={{ backgroundColor: c }} />
                   ))}
                 </div>
-
-                <div className="pt-2 flex items-center justify-between text-xs text-[#6E6A63]">
-                  <span>Paleta Harmônica</span>
-                  <div className="flex items-center gap-1.5">
-                    {currentStyle.palette.map((hex, i) => (
-                      <span
-                        key={i}
-                        className="w-4 h-4 rounded-full border border-black/10"
-                        style={{ backgroundColor: hex }}
-                      />
-                    ))}
-                  </div>
-                </div>
               </div>
+              <div className="ks-float-card ks-float-bottom">
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#9A8EAA]">Sugestão rápida</p>
+                <p className="mt-2 font-serif text-[16px] text-[#2A2039]">Look casual + leve</p>
+                <p className="mt-1 text-[11px] text-[#857A91]">Ideal para um dia ameno</p>
+              </div>
+            </div>
+          </div>
+          <div className="ks-hero-bottom-line" />
+        </section>
+
+        <section id="como-funciona" className="py-20 md:py-24">
+          <div className="ks-container">
+            <div className="mx-auto max-w-[640px] text-center">
+              <p className="ks-kicker">Como funciona</p>
+              <h2 className="mt-4 font-serif text-[clamp(2rem,4vw,2.8rem)] tracking-[-0.04em] text-[#2A2039]">
+                Três passos para um closet mais inteligente
+              </h2>
+              <p className="mt-4 text-[14px] leading-7 text-[#766B84]">
+                Sem pressão de comprar mais. O foco é organizar, combinar e se vestir com mais clareza todos os dias.
+              </p>
+            </div>
+            <div className="mt-12 grid gap-5 md:grid-cols-3">
+              {FEATURES.map((feature) => {
+                const Icon = feature.icon;
+                return (
+                  <div key={feature.number} className="ks-feature-card">
+                    <div className="flex items-center justify-between">
+                      <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F1EAFB] text-[#6E43C8]">
+                        <Icon size={20} strokeWidth={1.8} />
+                      </span>
+                      <span className="font-serif text-[28px] italic text-[#D0C0E4]">{feature.number}</span>
+                    </div>
+                    <h3 className="mt-8 font-serif text-[22px] tracking-[-0.03em] text-[#2A2039]">{feature.title}</h3>
+                    <p className="mt-3 text-[13px] leading-7 text-[#7C718A]">{feature.description}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
 
-        {/* Seção Provador Interativo */}
-        <section id="provador" className="py-20 bg-[#F2EDE4]/70 border-y border-[#E5DFD5]">
-          <div className="max-w-6xl mx-auto px-6 space-y-10">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <section id="inspiracao" className="ks-look-section py-20 md:py-24">
+          <div className="ks-container space-y-10">
+            <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
               <div>
-                <p className="text-xs uppercase tracking-widest text-[#B85D3B] font-semibold">
-                  Simulador de Cápsula
-                </p>
-                <h2 className="font-serif text-3xl md:text-4xl mt-2">
+                <p className="ks-kicker">Inspiração</p>
+                <h2 className="mt-3 font-serif text-[clamp(2rem,4vw,2.7rem)] tracking-[-0.04em] text-[#2A2039]">
                   Explore atmosferas de estilo
                 </h2>
               </div>
-
               <div className="flex flex-wrap gap-2">
                 {INTERACTIVE_STYLES.map((style, index) => (
                   <button
                     key={style.id}
+                    type="button"
                     onClick={() => setSelectedStyleIndex(index)}
-                    className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
+                    className={`rounded-full px-5 py-2.5 text-[12px] font-semibold transition-all ${
                       selectedStyleIndex === index
-                        ? "bg-[#181715] text-[#FAF8F5] shadow-sm"
-                        : "bg-[#FAF8F5] text-[#6E6A63] border border-[#E5DFD5] hover:text-[#181715]"
+                        ? "bg-[#6E43C8] text-white shadow-md shadow-[#6E43C8]/20"
+                        : "border border-[#E5D9F4] bg-white text-[#6B6179] hover:border-[#B9A3D9]"
                     }`}
                   >
                     {style.label}
@@ -244,55 +247,37 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-12 gap-8 bg-[#FAF8F5] rounded-3xl p-8 border border-[#E5DFD5]">
+            <div className="grid gap-8 rounded-[28px] border border-[#EAE3F1] bg-white p-6 md:grid-cols-12 md:p-8">
               <div className="md:col-span-5 flex flex-col justify-between space-y-6">
                 <div className="space-y-4">
-                  <div className="flex items-center gap-2 text-xs text-[#6E6A63] uppercase tracking-wider">
+                  <div className="flex items-center gap-2 text-[11px] uppercase tracking-wider text-[#9A8EAA]">
                     <span>{currentStyle.season}</span>
-                    <span>•</span>
+                    <span>·</span>
                     <span>{currentStyle.occasion}</span>
                   </div>
-                  <h3 className="font-serif text-3xl">{currentStyle.label}</h3>
-                  <p className="text-[#6E6A63] text-sm leading-relaxed">
-                    {currentStyle.description}
-                  </p>
+                  <h3 className="font-serif text-[32px] tracking-[-0.03em] text-[#2A2039]">{currentStyle.label}</h3>
+                  <p className="text-[13px] leading-7 text-[#7C718A]">{currentStyle.description}</p>
                 </div>
-
-                <div className="pt-4 border-t border-[#E5DFD5] flex items-center justify-between">
-                  <span className="text-xs uppercase tracking-widest text-[#6E6A63]">
-                    Cartela de Cores
-                  </span>
+                <div className="flex items-center justify-between border-t border-[#F0EBF5] pt-5">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#9A8EAA]">Cartela</span>
                   <div className="flex gap-2">
-                    {currentStyle.palette.map((color, idx) => (
-                      <div
-                        key={idx}
-                        className="w-7 h-7 rounded-full border border-black/15"
-                        style={{ backgroundColor: color }}
-                        title={color}
-                      />
+                    {currentStyle.palette.map((color) => (
+                      <span key={color} className="h-7 w-7 rounded-full border border-black/10" style={{ backgroundColor: color }} />
                     ))}
                   </div>
                 </div>
               </div>
-
-              <div className="md:col-span-7 grid sm:grid-cols-2 gap-4">
-                {currentStyle.pieces.map((piece, i) => (
-                  <div
-                    key={i}
-                    className="p-5 rounded-2xl bg-[#F2EDE4]/60 border border-[#E5DFD5] flex flex-col justify-between gap-4"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] uppercase tracking-widest text-[#6E6A63]">
+              <div className="md:col-span-7 grid gap-4 sm:grid-cols-2">
+                {currentStyle.pieces.map((piece) => (
+                  <div key={piece.name} className="ks-piece-card">
+                    <div className="ks-piece-swatch" style={{ backgroundColor: piece.color }}>
+                      <span className="relative z-10 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-semibold text-[#5E526F]">
                         {piece.category}
                       </span>
-                      <span
-                        className="w-4 h-4 rounded-full border border-black/10"
-                        style={{ backgroundColor: piece.color }}
-                      />
                     </div>
-                    <div>
-                      <h4 className="font-medium text-base">{piece.name}</h4>
-                      <p className="text-xs text-[#6E6A63] mt-1">{piece.fabric}</p>
+                    <div className="p-3">
+                      <h4 className="text-[14px] font-semibold text-[#2A2039]">{piece.name}</h4>
+                      <p className="mt-1 text-[11px] text-[#8B8097]">{piece.detail}</p>
                     </div>
                   </div>
                 ))}
@@ -301,93 +286,69 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Seção Método em 3 Pilares */}
-        <section id="metodo" className="max-w-6xl mx-auto px-6 py-20 space-y-12">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <p className="text-xs uppercase tracking-widest text-[#B85D3B] font-semibold">
-              Por que usar o Kloset Styles
-            </p>
-            <h2 className="font-serif text-3xl md:text-4xl">
-              Menos tempo decidindo, mais presença no seu dia
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                step: "01",
-                title: "Catalogação Visual",
-                desc: "Registre suas peças por categoria, tecido e estação para visualizar todo o seu acervo num só lugar.",
-              },
-              {
-                step: "02",
-                title: "Combinações Inteligentes",
-                desc: "Monte looks completos para trabalho, lazer ou viagens sem precisar tirar tudo do cabide.",
-              },
-              {
-                step: "03",
-                title: "Consumo Consciente",
-                desc: "Identifique o que realmente falta no seu armário e evite compras por impulso que ficam paradas.",
-              },
-            ].map((item) => (
-              <div
-                key={item.step}
-                className="p-7 rounded-3xl bg-[#F2EDE4]/50 border border-[#E5DFD5] space-y-4"
-              >
-                <span className="font-serif italic text-3xl text-[#B85D3B]">
-                  {item.step}
-                </span>
-                <h3 className="font-serif text-xl">{item.title}</h3>
-                <p className="text-sm text-[#6E6A63] leading-relaxed">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
+        <section id="duvidas" className="py-20 md:py-24">
+          <div className="ks-container max-w-3xl">
+            <div className="text-center">
+              <p className="ks-kicker">Dúvidas</p>
+              <h2 className="mt-3 font-serif text-[clamp(2rem,4vw,2.6rem)] tracking-[-0.04em] text-[#2A2039]">Perguntas frequentes</h2>
+            </div>
+            <div className="mt-10 space-y-3">
+              {FAQS.map((item, idx) => (
+                <div key={item.q} className="overflow-hidden rounded-2xl border border-[#EAE3F1] bg-white">
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                    className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left text-[14px] font-semibold text-[#2A2039]"
+                  >
+                    <span>{item.q}</span>
+                    <ChevronDown size={18} className={`shrink-0 text-[#9A8EAA] transition-transform ${openFaq === idx ? "rotate-180" : ""}`} />
+                  </button>
+                  {openFaq === idx && (
+                    <div className="border-t border-[#F0EBF5] px-6 pb-5 pt-3 text-[13px] leading-7 text-[#7C718A]">
+                      {item.a}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* Seção FAQ */}
-        <section id="faq" className="max-w-3xl mx-auto px-6 pb-24 space-y-8">
-          <div className="text-center space-y-2">
-            <h2 className="font-serif text-3xl">Perguntas Frequentes</h2>
-            <p className="text-sm text-[#6E6A63]">
-              Tudo o que você precisa saber sobre seu guarda-roupa digital.
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            {FAQS.map((item, idx) => (
-              <div
-                key={idx}
-                className="rounded-2xl border border-[#E5DFD5] bg-[#F2EDE4]/40 overflow-hidden"
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full px-6 py-4 text-left flex items-center justify-between font-medium text-sm"
-                >
-                  <span>{item.q}</span>
-                  <span className="text-[#B85D3B] text-lg">
-                    {openFaq === idx ? "−" : "+"}
-                  </span>
-                </button>
-                {openFaq === idx && (
-                  <div className="px-6 pb-5 text-sm text-[#6E6A63] leading-relaxed">
-                    {item.a}
-                  </div>
-                )}
+        <section className="pb-20 md:pb-24">
+          <div className="ks-container">
+            <div className="ks-cta-panel relative overflow-hidden rounded-[32px] px-8 py-14 text-center text-white md:px-16 md:py-16">
+              <div className="ks-cta-orb ks-cta-orb-one" />
+              <div className="ks-cta-orb ks-cta-orb-two" />
+              <span className="ks-cta-star">✦</span>
+              <div className="relative z-10">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70">Comece hoje</p>
+                <h2 className="mt-4 font-serif text-[clamp(2rem,4vw,3rem)] tracking-[-0.04em]">
+                  Seu próximo look pode nascer do que você já tem.
+                </h2>
+                <p className="mx-auto mt-4 max-w-md text-[14px] leading-7 text-white/75">
+                  Crie sua conta, organize o closet e experimente combinações com mais leveza.
+                </p>
+                <Link href="/cadastro" className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 text-[13px] font-bold text-[#5936A0] transition-all hover:-translate-y-0.5 hover:bg-[#F4EEFB]">
+                  Criar conta grátis <ArrowRight size={15} />
+                </Link>
               </div>
-            ))}
+            </div>
           </div>
         </section>
       </main>
 
-      {/* Rodapé Editorial */}
-      <footer className="border-t border-[#E5DFD5] bg-[#F2EDE4]/40 py-10">
-        <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#6E6A63]">
-          <p className="font-serif text-base text-[#181715]">
-            Kloset <span className="italic text-[#B85D3B]">Styles</span>
-          </p>
-          <p>© {new Date().getFullYear()} Kloset Styles. Curadoria de Guarda-Roupa Digital.</p>
+      <footer className="border-t border-[#EAE3F1] bg-white py-10">
+        <div className="ks-container flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-[11px] bg-[#6E43C8] font-serif text-[18px] italic text-white">K</span>
+            <span className="font-serif text-[17px] font-semibold text-[#2A2039]">
+              Kloset <span className="italic text-[#7953C8]">Styles</span>
+            </span>
+          </div>
+          <p className="text-[12px] text-[#9A8EAA]">© {new Date().getFullYear()} Kloset Styles. Seu guarda-roupa, suas soluções.</p>
+          <Link href="/login" className="text-[12px] font-semibold text-[#6E43C8] hover:text-[#4F2E9B]">
+            Entrar <ArrowUpRight size={13} className="ml-1 inline" />
+          </Link>
         </div>
       </footer>
     </div>
