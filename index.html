@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kloset Styles — Vista sua melhor versão</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Cormorant Garamond (Serif Editorial) & Plus Jakarta Sans (Clean UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            plum: {
+              950: '#140d18',
+              900: '#1b1220',
+              850: '#23162a',
+              800: '#2b1b32',
+              700: '#3d2847',
+              600: '#5a3f68',
+              500: '#765885',
+              400: '#9e82ad',
+              300: '#b89bc8',
+              200: '#d7c5e2',
+              100: '#eadff0',
+              50: '#f7f2fa',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background-color: #160e1b;
+      color: #f3ecf8;
+      transition: background-color 0.35s ease, color 0.35s ease;
+    }
+
+    /* Light Mode Override (Versão 2 Lavanda Editorial) */
+    body.theme-light {
+      background-color: #f6f0fa;
+      color: #231429;
+    }
+
+    body.theme-light .surface-nav {
+      background: linear-gradient(90deg, #d6c3e1 0%, #e4d5ed 50%, #d8c6e3 100%);
+      border-bottom: 1px solid rgba(158, 130, 173, 0.35);
+      color: #231429;
+    }
+
+    body.theme-light .surface-section {
+      background: #f6f0fa;
+      color: #231429;
+    }
+
+    body.theme-light .surface-card {
+      background: #ffffff;
+      border-color: rgba(158, 130, 173, 0.35);
+      color: #231429;
+      box-shadow: 0 10px 30px rgba(59, 36, 74, 0.08);
+    }
+
+    body.theme-light .text-muted-adaptive {
+      color: #5b4368 !important;
+    }
+
+    body.theme-light .heading-adaptive {
+      color: #221329 !important;
+    }
+
+    body.theme-light .categories-strip-adaptive {
+      background: linear-gradient(180deg, #efe6f5 0%, #f7f2fa 100%);
+      border-top: 1px solid rgba(184, 155, 200, 0.3);
+      border-bottom: 1px solid rgba(184, 155, 200, 0.3);
+    }
+
+    body.theme-light .cat-circle-adaptive {
+      background: radial-gradient(circle at 50% 35%, #d5bfe3 0%, #b597c7 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.75);
+      box-shadow: 0 6px 18px rgba(72, 42, 90, 0.14);
+    }
+
+    body.theme-light .cat-label-adaptive {
+      color: #3b2647 !important;
+    }
+
+    /* Hide scrollbar for category strip */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Hero Background & Sweeping Plum Curve (Image 1 & 2) */
+    .hero-dark-bg {
+      background: radial-gradient(circle at 78% 45%, #795c89 0%, #523961 32%, #1b1121 62%, #150d1a 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-curve-shape {
+      position: absolute;
+      top: -12%;
+      right: -6%;
+      width: 60%;
+      height: 125%;
+      background: linear-gradient(135deg, rgba(114, 84, 130, 0.88) 0%, rgba(154, 125, 168, 0.78) 55%, rgba(124, 96, 140, 0.85) 100%);
+      border-top-left-radius: 65% 85%;
+      border-bottom-left-radius: 55% 45%;
+      transform: rotate(-6deg);
+      pointer-events: none;
+      z-index: 1;
+      box-shadow: -30px 0 80px rgba(17, 10, 22, 0.65);
+    }
+
+    /* Smoky architectural strip background for Categories in Dark Mode */
+    .categories-dark-strip {
+      background: 
+        linear-gradient(180deg, rgba(22, 14, 27, 0.92) 0%, rgba(44, 32, 52, 0.65) 50%, rgba(24, 16, 30, 0.95) 100%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 24px, rgba(0,0,0,0.2) 24px, rgba(0,0,0,0.2) 48px);
+      backdrop-filter: blur(14px);
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    /* Category circle hover effects */
+    .cat-circle-dark {
+      width: 74px;
+      height: 74px;
+      border-radius: 9999px;
+      background: radial-gradient(circle at 50% 35%, #3d2a47 0%, #1c1321 75%);
+      border: 1.5px solid rgba(186, 156, 204, 0.28);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45), inset 0 1px 6px rgba(255, 255, 255, 0.08);
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cat-item:hover .cat-circle-dark,
+    .cat-item.active .cat-circle-dark {
+      border-color: #cbb0dc;
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 12px 26px rgba(184, 155, 200, 0.32), 0 0 15px rgba(184, 155, 200, 0.22);
+    }
+
+    /* Cards styling */
+    .ai-card-dark {
+      background: linear-gradient(105deg, #1b1220 0%, #2a1b32 45%, #5e436c 100%);
+      border: 1px solid rgba(206, 182, 222, 0.28);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.45);
+    }
+
+    .palette-card-dark {
+      background: 
+        radial-gradient(circle at 85% 18%, rgba(168, 138, 186, 0.45) 0%, transparent 52%),
+        radial-gradient(circle at 15% 80%, rgba(112, 82, 130, 0.4) 0%, transparent 55%),
+        linear-gradient(160deg, #3b2747 0%, #291a32 55%, #1e1325 100%);
+      border: 1px solid rgba(206, 182, 222, 0.26);
+      box-shadow: 0 16px 38px rgba(0, 0, 0, 0.45);
+    }
+
+    .look-card {
+      border: 1px solid rgba(215, 195, 228, 0.26);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .look-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(215, 195, 228, 0.65);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    @keyframes subtlePulse {
+      0%, 100% { opacity: 0.82; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.08); }
+    }
+    .sparkle-anim {
+      animation: subtlePulse 4s infinite ease-in-out;
+    }
+
+    /* Smooth Page Transitions */
+    .page-section {
+      animation: fadeInPage 0.3s ease-out;
+    }
+    @keyframes fadeInPage {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="selection:bg-plum-300 selection:text-plum-950 min-h-screen flex flex-col justify-between">
+
+  <!-- =====================================================================
+       1. TOP ANNOUNCEMENT BAR (PRESENTE EM TODAS AS PÁGINAS)
+       ===================================================================== -->
+  <div class="w-full bg-[#24162b] border-b border-white/5 text-[#cbb8d8] text-[11px] sm:text-xs py-2 px-4 sm:px-8 lg:px-14 z-40">
+    <div class="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-2">
+      <!-- Left Promo Text -->
+      <div class="flex items-center gap-2 sm:gap-2.5 tracking-wide">
+        <span>Frete grátis para todo o Brasil</span>
+        <span class="text-[#caaee0] text-[10px]">✦</span>
+        <span>Troca fácil em até 30 dias</span>
+        <span class="hidden sm:inline text-[#caaee0] text-[10px]">✦</span>
+        <span class="hidden sm:inline">Pagamento seguro</span>
+      </div>
+
+      <!-- Right Utility Links & Quick Counters -->
+      <div class="flex items-center gap-4 sm:gap-6 ml-auto">
+        <nav class="hidden md:flex items-center gap-5 text-[#b6a2c4]">
+          <button onclick="openInfoModal('sobre')" class="hover:text-white transition">Sobre nós</button>
+          <button onclick="openInfoModal('ajuda')" class="hover:text-white transition">Ajuda</button>
+          <button onclick="openInfoModal('contato')" class="hover:text-white transition">Contato</button>
+          <button onclick="openGitHubModal()" class="text-[#dfc9ee] hover:text-white font-medium inline-flex items-center gap-1 transition">
+            <span>Arquivos GitHub</span>
+          </button>
+        </nav>
+
+        <div class="flex items-center gap-3.5 text-[#e2d4ec]">
+          <!-- Theme Mode Switcher (Versão 1 Escura vs Versão 2 Clara) -->
+          <button 
+            id="theme-toggle-btn"
+            onclick="toggleThemeMode()" 
+            class="bg-white/10 hover:bg-white/20 text-[#f3ecf8] text-[10.5px] font-medium px-2.5 py-1 rounded-full border border-white/15 inline-flex items-center gap-1.5 transition"
+            title="Alternar entre Versão 1 (Escura) e Versão 2 (Clara)"
+          >
+            <span id="theme-toggle-icon">🌙</span>
+            <span id="theme-toggle-label">Versão 1: Escura</span>
+          </button>
+
+          <!-- Favorites Trigger -->
+          <button onclick="navigateTo('favoritos')" aria-label="Favoritos" class="relative hover:text-white transition flex items-center">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+            <span id="fav-badge" class="bg-[#d7b4c8] text-[#231429] text-[9px] font-bold px-1.5 rounded-full ml-0.5">2</span>
+          </button>
+
+          <!-- User Closet Profile -->
+          <button onclick="navigateTo('closet')" aria-label="Meu Closet" class="hover:text-white transition" title="Seu Closet Digital">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+          </button>
+
+          <!-- Shopping Bag Drawer Trigger -->
+          <button onclick="toggleCartDrawer(true)" aria-label="Sacola de Compras" class="relative hover:text-white transition flex items-center">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+            </svg>
+            <span id="cart-badge" class="bg-[#b89bc8] text-[#19101f] text-[9px] font-bold px-1.5 rounded-full ml-0.5">2</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       2. GLOBAL NAVIGATION BAR (INTEGRADA AO HERO E TODAS AS PÁGINAS)
+       ===================================================================== -->
+  <div class="surface-nav w-full bg-[#1b1121]/95 backdrop-blur-md border-b border-white/10 sticky top-0 z-30 transition-colors">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-14 py-3.5 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <button onclick="navigateTo('inicio')" class="group flex flex-col items-start focus:outline-none text-left">
+        <div class="flex items-center gap-2">
+          <span class="heading-adaptive font-serif text-3xl sm:text-[38px] font-normal tracking-tight text-[#f3ecf8] leading-none">Kloset</span>
+          <svg class="w-5 h-5 text-[#cbb2dc] sparkle-anim" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 1L14.2 9.8L23 12L14.2 14.2L12 23L9.8 14.2L1 12L9.8 9.8L12 1Z" />
+          </svg>
+        </div>
+        <span class="text-muted-adaptive text-[9.5px] tracking-[0.42em] text-[#b9a5c6] uppercase mt-1 pl-0.5 font-medium">S T Y L E S</span>
+      </button>
+
+      <!-- Desktop Navigation Pills -->
+      <nav class="hidden lg:flex items-center gap-1.5 xl:gap-2 text-[13px]">
+        <button data-nav="inicio" onclick="navigateTo('inicio')" class="nav-pill bg-[#b79ac8] text-[#1c1123] font-semibold px-5 py-1.5 rounded-full shadow-sm transition">Início</button>
+        <button data-nav="loja" onclick="navigateTo('loja')" class="nav-pill text-[#dcd0e5] text-muted-adaptive hover:text-white hover:bg-white/10 px-4 py-1.5 rounded-full transition">Loja</button>
+        <button data-nav="closet" onclick="navigateTo('closet')" class="nav-pill text-[#dcd0e5] text-muted-adaptive hover:text-white hover:bg-white/10 px-4 py-1.5 rounded-full transition">Seu Closet</button>
+        <button data-nav="paleta" onclick="navigateTo('paleta')" class="nav-pill text-[#dcd0e5] text-muted-adaptive hover:text-white hover:bg-white/10 px-4 py-1.5 rounded-full transition">Paleta Pessoal</button>
+        <button data-nav="looks" onclick="navigateTo('looks')" class="nav-pill text-[#dcd0e5] text-muted-adaptive hover:text-white hover:bg-white/10 px-4 py-1.5 rounded-full transition">Looks & IA</button>
+        <button data-nav="clima" onclick="navigateTo('clima')" class="nav-pill text-[#dcd0e5] text-muted-adaptive hover:text-white hover:bg-white/10 px-4 py-1.5 rounded-full transition">Clima</button>
+        <button data-nav="favoritos" onclick="navigateTo('favoritos')" class="nav-pill text-[#dcd0e5] text-muted-adaptive hover:text-white hover:bg-white/10 px-4 py-1.5 rounded-full transition">Favoritos</button>
+      </nav>
+
+      <!-- Right Search Input & Mobile Menu Button -->
+      <div class="flex items-center gap-3">
+        <div class="relative hidden sm:block">
+          <input 
+            id="global-search-input"
+            type="text" 
+            oninput="handleGlobalSearch(this.value)"
+            placeholder="Buscar roupas, estilos..." 
+            class="bg-white/10 border border-[#b89bc8]/35 text-xs rounded-full pl-4 pr-9 py-1.5 w-44 xl:w-56 placeholder-[#b9a5c6] text-white focus:outline-none focus:border-[#dfc9ee] transition"
+          />
+          <svg class="w-3.5 h-3.5 text-[#cbb2dc] absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path stroke-linecap="round" d="M20 20l-3.5-3.5"></path>
+          </svg>
+        </div>
+
+        <!-- Mobile Menu Hamburger -->
+        <button onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-xl border border-white/15 text-[#e5d8f0] hover:bg-white/10">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden lg:hidden px-4 pb-4 pt-2 border-t border-white/10 bg-[#221529]">
+      <div class="flex flex-wrap gap-2 text-xs">
+        <button onclick="navigateTo('inicio'); toggleMobileMenu()" class="px-4 py-1.5 rounded-full bg-[#b79ac8] text-[#1c1123] font-semibold">Início</button>
+        <button onclick="navigateTo('loja'); toggleMobileMenu()" class="px-4 py-1.5 rounded-full bg-white/10 text-white">Loja</button>
+        <button onclick="navigateTo('closet'); toggleMobileMenu()" class="px-4 py-1.5 rounded-full bg-white/10 text-white">Seu Closet</button>
+        <button onclick="navigateTo('paleta'); toggleMobileMenu()" class="px-4 py-1.5 rounded-full bg-white/10 text-white">Paleta Pessoal</button>
+        <button onclick="navigateTo('looks'); toggleMobileMenu()" class="px-4 py-1.5 rounded-full bg-white/10 text-white">Looks & IA</button>
+        <button onclick="navigateTo('clima'); toggleMobileMenu()" class="px-4 py-1.5 rounded-full bg-white/10 text-white">Clima</button>
+        <button onclick="navigateTo('favoritos'); toggleMobileMenu()" class="px-4 py-1.5 rounded-full bg-white/10 text-white">Favoritos</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       PAGE 1: INÍCIO (HOME COMPLETA - UNE AS IMAGENS 1 E 2 PERFEITAMENTE)
+       ===================================================================== -->
+  <div id="page-inicio" class="page-section flex-1">
+
+    <!-- HERO SECTION -->
+    <header class="hero-dark-bg w-full relative">
+      <!-- Sweeping Curved Purple Shape on Right -->
+      <div class="hero-curve-shape"></div>
+
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-14 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 items-center pt-6 pb-10 lg:py-10 relative">
+
+          <!-- Left Column: Typography & CTAs -->
+          <div class="lg:col-span-6 z-20 space-y-3 sm:space-y-4 pb-6 lg:pb-4">
+            <span id="hero-kicker" class="text-[10.5px] tracking-[0.26em] uppercase text-[#d8c6e4] font-medium block">
+              DESCUBRA &bull; ORGANIZE &bull; SE VISTA BEM
+            </span>
+
+            <h1 class="font-serif text-5xl sm:text-6xl xl:text-[76px] leading-[0.96] tracking-tight text-[#f4edf9]">
+              <span class="italic font-normal text-[#DFC9EE]">Kloset</span>
+              <span class="font-normal"> Styles</span>
+            </h1>
+
+            <p id="hero-subtitle" class="font-serif italic text-2xl sm:text-[34px] text-[#dec9ec] leading-tight pt-0.5">
+              Vista sua melhor versão.
+            </p>
+
+            <p id="hero-desc" class="text-[#c1b0cc] text-xs sm:text-[14.5px] leading-relaxed max-w-[440px] pt-1 font-normal">
+              Descubra looks, organize seu guarda-roupa e receba sugestões personalizadas para cada ocasião.
+            </p>
+
+            <!-- CTA Pill Buttons -->
+            <div class="flex flex-wrap items-center gap-3.5 pt-3">
+              <button onclick="navigateTo('loja')" class="bg-[#b79ac8] hover:bg-[#c8aed8] text-[#1c1123] font-semibold text-xs sm:text-[13px] px-6 py-2.5 rounded-full inline-flex items-center gap-2.5 shadow-lg shadow-black/25 transition transform hover:-translate-y-0.5">
+                <span>Explorar Loja</span>
+                <span class="text-sm">→</span>
+              </button>
+
+              <button onclick="navigateTo('looks')" class="bg-[#211528]/70 hover:bg-[#2f1f38] text-[#eadff2] border border-[#b79ac8]/45 text-xs sm:text-[13px] font-medium px-6 py-2.5 rounded-full transition transform hover:-translate-y-0.5">
+                Conheça o Kloset
+              </button>
+            </div>
+
+            <!-- Slide Progress Bar (01 / 04 from Image 2) -->
+            <div class="flex items-center gap-3 pt-4 text-xs text-[#cbb8d8]">
+              <span id="hero-slide-counter" class="font-mono text-[11px]">01 / 04</span>
+              <div class="w-28 h-[2px] bg-white/20 rounded-full overflow-hidden">
+                <div id="hero-slide-progress" class="w-1/4 h-full bg-[#dfc9ee] transition-all duration-300"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Center Decorative 4-Point Star with Crosshair Lines (Exact match to Image 1) -->
+          <div class="hidden lg:flex absolute left-[43%] top-[54%] -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none items-center justify-center">
+            <div class="relative flex items-center justify-center">
+              <div class="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#cbb0dc]/60 to-transparent absolute"></div>
+              <div class="h-24 w-[1px] bg-gradient-to-b from-transparent via-[#cbb0dc]/60 to-transparent absolute"></div>
+              <svg class="w-10 h-10 text-[#b79ac8] sparkle-anim" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0L14.4 9.6L24 12L14.4 14.4L12 24L9.6 14.4L0 12L9.6 9.6L12 0Z" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Right Column: High-Fashion Model Portrait & Controls -->
+          <div class="lg:col-span-6 relative flex justify-center lg:justify-end items-end z-10 min-h-[290px] sm:min-h-[350px]">
+            
+            <!-- Dark 4-Point Star on Upper Right (Exact match to Image 1) -->
+            <div class="hidden sm:flex absolute right-8 top-2 z-20 pointer-events-none items-center justify-center">
+              <div class="w-28 h-[1px] bg-gradient-to-r from-transparent via-[#1d1124]/60 to-transparent absolute"></div>
+              <div class="h-28 w-[1px] bg-gradient-to-b from-transparent via-[#1d1124]/60 to-transparent absolute"></div>
+              <svg class="w-14 h-14 text-[#1d1124]/85" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0L14.3 9.7L24 12L14.3 14.3L12 24L9.7 14.3L0 12L9.7 9.7L12 0Z" />
+              </svg>
+            </div>
+
+            <!-- Editorial Quote Box on Right (Visible on wide screens, matching Image 2) -->
+            <div class="hidden xl:block absolute right-14 top-16 z-20 border-l border-white/35 pl-3.5 py-1 text-[11.5px] text-[#f3ecf8]/90 space-y-0.5 leading-relaxed">
+              <p>Moda inteligente.</p>
+              <p>Estilo real.</p>
+              <p>Você em primeiro lugar.</p>
+            </div>
+
+            <!-- Editorial Model Cutout -->
+            <div class="relative w-full max-w-[540px] h-[300px] sm:h-[355px] flex items-end justify-center overflow-visible">
+              <img 
+                id="hero-model-img"
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=85" 
+                alt="Modelo Kloset Styles"
+                class="h-[320px] sm:h-[375px] w-auto object-cover object-top rounded-t-3xl select-none transition-all duration-500"
+                style="mask-image: linear-gradient(to bottom, black 78%, transparent 100%), radial-gradient(ellipse at center, black 62%, transparent 98%); -webkit-mask-image: linear-gradient(to bottom, black 82%, transparent 100%); filter: contrast(1.08) brightness(0.92) saturate(0.85);"
+                onerror="this.src='https://placehold.co/600x450/3d2847/f3ecf8?text=Kloset+Styles'"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#18101d] via-transparent to-transparent opacity-60 pointer-events-none"></div>
+            </div>
+
+            <!-- Far Right Vertical Indicator & Slider Arrows -->
+            <div class="flex flex-col items-center justify-between h-[210px] absolute right-0 bottom-2 z-30">
+              <div class="hidden sm:flex flex-col items-center gap-2 text-[10px] tracking-widest text-[#e5d6f0]/75 font-mono">
+                <span class="rotate-90">IG</span>
+                <span id="hero-ig-num" class="rotate-90 mt-2">01</span>
+                <div class="w-[1px] h-12 bg-white/30 mt-2"></div>
+              </div>
+
+              <div class="flex items-center gap-2 mt-auto">
+                <button onclick="cycleHeroSlide(-1)" aria-label="Slide Anterior" class="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center text-white/85 hover:bg-white/15 hover:border-white transition">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button onclick="cycleHeroSlide(1)" aria-label="Próximo Slide" class="w-8 h-8 rounded-full border border-white/40 flex items-center justify-center text-white/85 hover:bg-white/15 hover:border-white transition">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 11-CIRCLE CATEGORIES STRIP (EXACT MATCH TO IMAGE 1 & 2) -->
+    <section class="categories-dark-strip categories-strip-adaptive w-full py-5 px-4 sm:px-8 lg:px-14 relative z-20">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="flex items-start justify-between gap-4 sm:gap-5 overflow-x-auto no-scrollbar py-1">
+
+          <!-- 1. Todas as categorias -->
+          <button onclick="selectCategoryFromHome('todas', this)" class="cat-item active group flex flex-col items-center min-w-[78px] focus:outline-none">
+            <div class="cat-circle-dark cat-circle-adaptive flex items-center justify-center !border-[#c7a9d9]">
+              <svg class="w-9 h-9 text-[#e4d4f0] group-hover:scale-110 transition" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M16 7a2.5 2.5 0 112.5 2.5c0 1.2-.8 2-1.8 2.6L16 12.6 5 19.5a1.5 1.5 0 00.8 2.8h20.4a1.5 1.5 0 00.8-2.8L16 12.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="cat-label-adaptive text-[11px] font-semibold text-white mt-2 leading-tight text-center">Todas<br>as categorias</span>
+          </button>
+
+          <!-- 2. Vestidos -->
+          <button onclick="selectCategoryFromHome('vestidos', this)" class="cat-item group flex flex-col items-center min-w-[76px] focus:outline-none">
+            <div class="cat-circle-dark cat-circle-adaptive">
+              <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=240&q=80" alt="Vestidos" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition" style="filter: saturate(0.4) brightness(0.85) contrast(1.15);" />
+            </div>
+            <span class="cat-label-adaptive text-[11px] text-[#d5c5e0] group-hover:text-white mt-2 transition">Vestidos</span>
+          </button>
+
+          <!-- 3. Blusas -->
+          <button onclick="selectCategoryFromHome('blusas', this)" class="cat-item group flex flex-col items-center min-w-[76px] focus:outline-none">
+            <div class="cat-circle-dark cat-circle-adaptive">
+              <img src="https://images.unsplash.com/photo-1564257631407-4deb1f99d992?auto=format&fit=crop&w=240&q=80" alt="Blusas" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition" style="filter: grayscale(0.8) brightness(0.75) contrast(1.25);" />
+            </div>
+            <span class="cat-label-adaptive text-[11px] text-[#d5c5e0] group-hover:text-white mt-2 transition">Blusas</span>
+          </button>
+
+          <!-- 4. Casacos -->
+          <button onclick="selectCategoryFromHome('casacos', this)" class="cat-item group flex flex-col items-center min-w-[76px] focus:outline-none">
+            <div class="cat-circle-dark cat-circle-adaptive">
+              <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=240&q=80" alt="Casacos" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition" style="filter: saturate(0.25) brightness(0.85) contrast(1.15);" />
+            </div>
+            <span class="cat-label-adaptive text-[11px] text-[#d5c5e0] group-hover:text-white mt-2 transition">Casacos</span>
+          </button>
+
+          <!-- 5. Calças -->
+          <button onclick="selectCategoryFromHome('calcas', this)" class="cat-item group flex flex-col items-center min-w-[76px] focus:outline-none">
+            <div class="cat-circle-dark cat-circle-adaptive">
+              <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=240&q=80" alt="Calças" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition" style="filter: grayscale(0.75) brightness(0.8) contrast(1.15);" />
+            </div>
+            <span class="cat-label-adaptive text-[11px] text-[#d5c5e0] group-hover:text-white mt-2 transition">Calças</span>
+          </button>
+
+          <!-- 6. Saias -->
+          <button onclick="selectCategoryFromHome('saias', this)" class="cat-item group flex flex-col items-center min-w-[76px] focus:outline-none">
+            <div class="cat-circle-dark cat-circle-adaptive">
+              <img src="https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=240&q=80" alt="Saias" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition" style="filter: grayscale(0.8) brightness(0.75) contrast(1.2);" />
+            </div>
+            <span class="cat-label-adaptive text-[11px] text-[#d5c5e0] group-hover:text-white mt-2 transition">Saias</span>
+          </button>
+
+          <!-- 7. Conjuntos -->
+          <button onclick="selectCategoryFromHome('conjuntos', this)" class="cat-item group flex flex-col items-center min-w-[76px] focus:outline-none">
+            <div class="cat-circle-dark cat-circle-adaptive">
+              <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=240&q=80" alt="Conjuntos" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition" style="filter: saturate(0.3) brightness(0.85) contrast(1.15);" />
+            </div>
+            <span class="cat-label-adaptive text-[11px] text-[#d5c5e0] group-hover:text-white mt-2 transition">Conjuntos</span>
+          </button>
+
+          <!-- 8. Bolsas -->
+          <button onclick="selectCategoryFromHome('bolsas', this)" class="cat-item group flex flex-col items-center min-w-[76px] focus:outline-none">
+            <div class="cat-circle-dark cat-circle-adaptive">
+              <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=240&q=80" alt="Bolsas" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition" style="filter: grayscale(0.8) brightness(0.7) contrast(1.25);" />
+            </div>
+            <span class="cat-label-adaptive text-[11px] text-[#d5c5e0] group-hover:text-white mt-2 transition">Bolsas</span>
+          </button>
+
+          <!-- 9. Calçados -->
+          <button onclick="selectCategoryFromHome('calcados', this)" class="cat-item group flex flex-col items-center min-w-[76px] focus:outline-none">
+            <div class="cat-circle-dark cat-circle-adaptive">
+              <img src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=240&q=80" alt="Calçados" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition" style="filter: grayscale(0.85) brightness(0.75) contrast(1.25);" />
+            </div>
+            <span class="cat-label-adaptive text-[11px] text-[#d5c5e0] group-hover:text-white mt-2 transition">Calçados</span>
+          </button>
+
+          <!-- 10. Acessórios -->
+          <button onclick="selectCategoryFromHome('acessorios', this)" class="cat-item group flex flex-col items-center min-w-[76px] focus:outline-none">
+            <div class="cat-circle-dark cat-circle-adaptive">
+              <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=240&q=80" alt="Acessórios" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition" style="filter: grayscale(0.85) brightness(0.75) contrast(1.2);" />
+            </div>
+            <span class="cat-label-adaptive text-[11px] text-[#d5c5e0] group-hover:text-white mt-2 transition">Acessórios</span>
+          </button>
+
+          <!-- 11. Favoritos -->
+          <button onclick="navigateTo('favoritos')" class="cat-item group flex flex-col items-center min-w-[76px] focus:outline-none">
+            <div class="cat-circle-dark cat-circle-adaptive flex items-center justify-center">
+              <svg class="w-8 h-8 text-[#c5a8d8] group-hover:scale-110 transition" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 1L14.3 9.7L23 12L14.3 14.3L12 23L9.7 14.3L1 12L9.7 9.7L12 1Z" />
+              </svg>
+            </div>
+            <span class="cat-label-adaptive text-[11px] font-semibold text-white mt-2">Favoritos</span>
+          </button>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIMARY BENTO GRID (IMAGE 1: IA CARD + LOOKS EM ALTA + SUA PALETA PESSOAL) -->
+    <section class="surface-section w-full py-7 px-4 sm:px-8 lg:px-14">
+      <div class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+
+        <!-- COLUMN 1: AI STYLING CARD (~35% / 4 cols) -->
+        <div class="lg:col-span-4 ai-card-dark rounded-[22px] overflow-hidden relative flex flex-col sm:flex-row items-stretch min-h-[275px]">
+          <div class="sm:w-[46%] relative min-h-[180px] sm:min-h-full overflow-hidden">
+            <img 
+              src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&q=80" 
+              alt="Cabides de roupas" 
+              class="w-full h-full object-cover object-left scale-105"
+              style="filter: grayscale(0.55) brightness(0.75) contrast(1.2);"
+            />
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-[#23162b]/65 to-[#2d1d36]"></div>
+            <svg class="w-6 h-6 text-[#cbb0dc] absolute bottom-5 left-6 z-10 sparkle-anim" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 1L14.2 9.8L23 12L14.2 14.2L12 23L9.8 14.2L1 12L9.8 9.8L12 1Z" />
+            </svg>
+          </div>
+
+          <div class="sm:w-[54%] p-5 sm:p-6 sm:pl-2 flex flex-col justify-center z-10 text-white">
+            <span class="text-[10px] tracking-[0.18em] uppercase text-[#b59dc4] font-semibold">
+              SEU ESTILO, NOSSO GUIA
+            </span>
+            <h2 class="font-serif italic text-2xl sm:text-[27px] leading-[1.12] text-[#f5eef9] mt-1.5">
+              Monte looks incríveis com a ajuda da IA
+            </h2>
+            <p class="text-[12px] text-[#cbbad7] leading-relaxed mt-2.5">
+              Receba sugestões personalizadas de acordo com seu clima, ocasião e paleta pessoal.
+            </p>
+            <div class="mt-4 pt-1">
+              <button onclick="navigateTo('looks')" class="border border-[#d8c3e8]/50 hover:border-white bg-white/5 hover:bg-white/15 text-[#f3ecf8] text-xs font-medium px-5 py-2 rounded-full inline-flex items-center gap-2 transition">
+                <span>Experimentar agora</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLUMN 2: "LOOKS EM ALTA" (4 VERTICAL CARDS, ~50% / 6 cols) -->
+        <div class="lg:col-span-6 flex flex-col justify-between">
+          <div class="flex items-center gap-3 mb-3.5">
+            <svg class="w-5 h-5 text-[#c5a8d8] shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 1L14.2 9.8L23 12L14.2 14.2L12 23L9.8 14.2L1 12L9.8 9.8L12 1Z" />
+            </svg>
+            <h2 class="heading-adaptive font-serif text-2xl sm:text-[28px] text-[#f4edf9] tracking-tight shrink-0">
+              Looks em alta
+            </h2>
+            <div class="h-[1px] bg-gradient-to-r from-[#b89bc8]/40 via-[#b89bc8]/25 to-transparent flex-1 mx-2"></div>
+            <button onclick="navigateTo('loja')" class="text-muted-adaptive text-xs text-[#d6c4e3] hover:text-white inline-flex items-center gap-1.5 shrink-0 transition">
+              <span>Ver todos</span>
+              <span>→</span>
+            </button>
+          </div>
+
+          <div id="home-looks-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 flex-1">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <!-- COLUMN 3: "SUA PALETA PESSOAL" (~15% / 2 cols) -->
+        <div class="lg:col-span-2 palette-card-dark rounded-[22px] p-5 relative flex flex-col justify-between min-h-[275px] text-white">
+          <div>
+            <svg class="w-5 h-5 text-[#cbb0dc] mb-2" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 1L14.2 9.8L23 12L14.2 14.2L12 23L9.8 14.2L1 12L9.8 9.8L12 1Z" />
+            </svg>
+
+            <div class="pr-8">
+              <h3 class="font-serif text-xl sm:text-[23px] leading-[1.12] text-[#f4edf9]">
+                Sua paleta pessoal
+              </h3>
+              <p class="text-[11.5px] text-[#c7b5d4] leading-relaxed mt-2.5">
+                Descubra as cores que mais valorizam você.
+              </p>
+              <span id="active-palette-pill" class="inline-block mt-2.5 text-[10px] bg-white/10 border border-white/15 px-2.5 py-0.5 rounded-full text-[#e5d4f0]">
+                Inverno Profundo
+              </span>
+            </div>
+          </div>
+
+          <!-- Right Vertical Color Swatches Stack -->
+          <div class="absolute right-3.5 top-1/2 -translate-y-1/2 flex flex-col gap-2.5">
+            <button onclick="navigateTo('paleta')" title="Ameixa Profundo" class="w-6 h-6 rounded-full bg-[#231826] border border-white/25 shadow-md hover:scale-110 transition"></button>
+            <button onclick="navigateTo('paleta')" title="Malva Suave" class="w-6 h-6 rounded-full bg-[#bfa3be] border border-white/35 shadow-md hover:scale-110 transition"></button>
+            <button onclick="navigateTo('paleta')" title="Rosa Gelo" class="w-6 h-6 rounded-full bg-[#d3bacb] border border-white/35 shadow-md hover:scale-110 transition"></button>
+            <button onclick="navigateTo('paleta')" title="Noite Intensa" class="w-6 h-6 rounded-full bg-[#2a1c2e] border border-white/25 shadow-md hover:scale-110 transition"></button>
+          </div>
+
+          <div class="mt-4 pt-2">
+            <button onclick="navigateTo('paleta')" class="w-full bg-[#b79ac8] hover:bg-[#c8aed8] text-[#1c1123] font-semibold text-[11px] py-2 px-3 rounded-full inline-flex items-center justify-center gap-1.5 shadow-md transition">
+              <span>Ver minha paleta</span>
+              <span>→</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECONDARY BENTO ROW (IMAGE 2: MEU CLOSET + QUIZ DESCUBRA SEU ESTILO + CLIMA MARINGÁ 22°C) -->
+    <section class="surface-section w-full pb-10 pt-2 px-4 sm:px-8 lg:px-14">
+      <div class="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+
+        <!-- Left Card: Monte seu closet com praticidade -->
+        <div class="lg:col-span-4 rounded-[22px] bg-gradient-to-r from-[#211328] via-[#2c1a36] to-[#3d2749] border border-[#b89bc8]/25 text-white overflow-hidden shadow-xl flex flex-col sm:flex-row min-h-[245px]">
+          <div class="sm:w-[45%] relative min-h-[160px]">
+            <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&q=80" alt="Closet" class="w-full h-full object-cover" style="filter: sepia(0.15) brightness(0.8) contrast(1.15);"/>
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#2c1a36]"></div>
+          </div>
+          <div class="sm:w-[55%] p-5 flex flex-col justify-center">
+            <h3 class="font-serif text-2xl leading-tight text-white">
+              Monte<br>seu closet<br>com praticidade.
+            </h3>
+            <p class="text-[11.5px] text-[#cbbad7] mt-2.5 leading-relaxed">
+              Organize suas peças, descubra novas combinações e aproveite ainda mais seu estilo.
+            </p>
+            <div class="mt-4">
+              <button onclick="navigateTo('closet')" class="border border-white/40 hover:border-white bg-white/5 hover:bg-white/15 text-xs px-5 py-2 rounded-full inline-flex items-center gap-2 transition">
+                <span>Meu Closet</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Middle Card: Descubra seu estilo (Soft Lavender Card from Image 2) -->
+        <div class="lg:col-span-5 rounded-[22px] bg-gradient-to-r from-[#d5bfe3] via-[#dec9eb] to-[#e8daf2] text-[#231429] overflow-hidden shadow-xl flex flex-col sm:flex-row min-h-[245px]">
+          <div class="sm:w-[54%] p-6 flex flex-col justify-center">
+            <span class="text-[10px] tracking-[0.2em] uppercase text-[#563b66] font-semibold">QUIZ DE ESTILO</span>
+            <h3 class="font-serif text-2xl sm:text-[30px] leading-tight text-[#231429] mt-1">
+              Descubra seu estilo
+            </h3>
+            <p class="text-xs text-[#462f52] mt-2.5 leading-relaxed">
+              Faça nosso quiz interativo e encontre looks e cores que combinam com você.
+            </p>
+            <div class="mt-5">
+              <button onclick="navigateTo('paleta')" class="bg-[#24142c] hover:bg-[#372042] text-white text-xs font-medium px-6 py-2.5 rounded-full inline-flex items-center gap-2 transition shadow-md">
+                <span>Descobrir agora</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+          <div class="sm:w-[46%] relative min-h-[180px]">
+            <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=600&q=80" alt="Espelho e cabideiro" class="w-full h-full object-cover" style="filter: saturate(0.4) contrast(1.05);"/>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#dec9eb] via-transparent to-transparent"></div>
+          </div>
+        </div>
+
+        <!-- Right Card: Clima Hoje em Maringá - PR (Exact Match to Image 2) -->
+        <div class="lg:col-span-3 rounded-[22px] bg-[#221329] border border-[#b89bc8]/25 text-white p-5 shadow-xl flex flex-col justify-between min-h-[245px]">
+          <div>
+            <div class="flex items-center justify-between text-xs text-[#cbb8d8]">
+              <span id="home-weather-city">Hoje em Maringá - PR</span>
+              <button onclick="navigateTo('clima')" class="text-[10px] text-[#dfc9ee] underline hover:text-white">alterar cidade</button>
+            </div>
+
+            <div class="flex items-center gap-3 mt-3">
+              <svg class="w-9 h-9 text-[#d6c2e3]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+              </svg>
+              <span id="home-weather-temp" class="font-serif text-3xl sm:text-4xl text-white">22°C</span>
+              <span id="home-weather-cond" class="text-xs text-[#cbb8d8] ml-1">Nublado</span>
+            </div>
+          </div>
+
+          <!-- Outfit Suggestion Box -->
+          <div class="bg-[#311e3b]/90 border border-white/10 rounded-xl p-2.5 mt-4 flex items-center gap-3 relative">
+            <img 
+              src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=200&q=80" 
+              alt="Casual Chic" 
+              class="w-14 h-16 rounded-lg object-cover shrink-0"
+            />
+            <div class="flex-1 min-w-0">
+              <span class="text-[10px] text-[#bfa9ce] block">Sugestão de look:</span>
+              <strong id="home-weather-look" class="text-xs text-white font-semibold block">Casual Chic</strong>
+              <div class="text-right mt-2">
+                <button onclick="navigateTo('clima')" class="text-[11px] text-[#d8c4e6] hover:text-white underline inline-flex items-center gap-1">
+                  <span>Ver mais</span>
+                  <span>→</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+
+  <!-- =====================================================================
+       PAGE 2: LOJA (CATÁLOGO COMPLETO DE E-COMMERCE COM FILTROS)
+       ===================================================================== -->
+  <div id="page-loja" class="page-section hidden flex-1 py-8 px-4 sm:px-8 lg:px-14">
+    <div class="max-w-[1440px] mx-auto space-y-6">
+      
+      <!-- Store Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-5">
+        <div>
+          <span class="text-[10.5px] tracking-[0.22em] uppercase text-[#b89bc8] font-semibold">COLEÇÃO KLOSET STYLES</span>
+          <h1 class="heading-adaptive font-serif text-4xl sm:text-5xl text-white mt-1">Loja & Curadoria</h1>
+          <p class="text-muted-adaptive text-xs sm:text-sm text-[#cbbad7] mt-1">
+            Peças selecionadas que harmonizam com sua cartela de cores e seu guarda-roupa inteligente.
+          </p>
+        </div>
+
+        <!-- Palette Filter Toggle & Sort -->
+        <div class="flex flex-wrap items-center gap-3">
+          <button 
+            id="btn-filter-palette"
+            onclick="toggleStorePaletteFilter()" 
+            class="text-xs px-4 py-2 rounded-full border border-[#b89bc8]/45 bg-white/5 hover:bg-white/15 text-[#e6d6f2] inline-flex items-center gap-2 transition"
+          >
+            <span class="text-[#cbb0dc]">✦</span>
+            <span id="label-filter-palette">Filtrar pela minha Paleta (Inverno Profundo)</span>
+          </button>
+
+          <select id="store-sort" onchange="renderStoreCatalog()" class="bg-[#23162a] border border-[#b89bc8]/35 text-xs text-white rounded-full px-4 py-2 focus:outline-none">
+            <option value="destaque">Ordenar: Em alta</option>
+            <option value="menor">Menor preço</option>
+            <option value="maior">Maior preço</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div id="store-category-pills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+        <!-- Populated dynamically -->
+      </div>
+
+      <!-- Store Products Grid -->
+      <div id="store-products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Populated dynamically -->
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       PAGE 3: SEU CLOSET (GERENCIADOR DE GUARDA-ROUPA DIGITAL)
+       ===================================================================== -->
+  <div id="page-closet" class="page-section hidden flex-1 py-8 px-4 sm:px-8 lg:px-14">
+    <div class="max-w-[1440px] mx-auto space-y-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-5">
+        <div>
+          <span class="text-[10.5px] tracking-[0.22em] uppercase text-[#b89bc8] font-semibold">ORGANIZAÇÃO INTELIGENTE</span>
+          <h1 class="heading-adaptive font-serif text-4xl sm:text-5xl text-white mt-1">Seu Closet Digital</h1>
+          <p class="text-muted-adaptive text-xs sm:text-sm text-[#cbbad7] mt-1">
+            Cadastre suas roupas, visualize tudo que você possui e crie combinações com nossa IA.
+          </p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span id="closet-count-badge" class="text-xs bg-[#2c1c36] border border-[#b89bc8]/35 text-[#dfc9ee] px-4 py-2 rounded-full">
+            6 peças no seu closet
+          </span>
+          <button onclick="navigateTo('looks')" class="bg-[#b79ac8] hover:bg-[#c8aed8] text-[#1c1123] font-semibold text-xs px-5 py-2.5 rounded-full transition">
+            Montar Look com IA →
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left Form: Add New Clothing Piece -->
+        <div class="lg:col-span-4 surface-card bg-[#211528] border border-[#b89bc8]/30 rounded-[22px] p-6 space-y-4">
+          <div class="flex items-center gap-2">
+            <span class="text-[#cbb0dc]">✦</span>
+            <h2 class="heading-adaptive font-serif text-2xl text-white">Adicionar Nova Peça</h2>
+          </div>
+          <p class="text-muted-adaptive text-xs text-[#cbbad7]">
+            Adicione itens que você já tem em casa para combinar com peças da loja.
+          </p>
+
+          <form onsubmit="addClosetItem(event)" class="space-y-3.5 text-xs">
+            <div>
+              <label class="block text-[#d6c4e3] text-muted-adaptive mb-1 font-medium">Nome da Peça *</label>
+              <input id="closet-name" type="text" required placeholder="Ex: Blazer Alfaiataria Preto" class="w-full bg-[#160e1b] border border-[#b89bc8]/35 rounded-xl px-3.5 py-2.5 text-white placeholder-[#8e799c] focus:outline-none focus:border-[#dfc9ee]" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[#d6c4e3] text-muted-adaptive mb-1 font-medium">Categoria</label>
+                <select id="closet-category" class="w-full bg-[#160e1b] border border-[#b89bc8]/35 rounded-xl px-3 py-2.5 text-white">
+                  <option value="blusas">Blusas</option>
+                  <option value="vestidos">Vestidos</option>
+                  <option value="casacos">Casacos</option>
+                  <option value="calcas">Calças</option>
+                  <option value="saias">Saias</option>
+                  <option value="calcados">Calçados</option>
+                  <option value="bolsas">Bolsas</option>
+                  <option value="acessorios">Acessórios</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[#d6c4e3] text-muted-adaptive mb-1 font-medium">Clima Ideal</label>
+                <select id="closet-season" class="w-full bg-[#160e1b] border border-[#b89bc8]/35 rounded-xl px-3 py-2.5 text-white">
+                  <option value="Todas as estações">Todas as estações</option>
+                  <option value="Meia-estação (22°C)">Meia-estação (22°C)</option>
+                  <option value="Dias Frios (15°C)">Dias Frios (15°C)</option>
+                  <option value="Dias Quentes (28°C)">Dias Quentes (28°C)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[#d6c4e3] text-muted-adaptive mb-1 font-medium">Cor Predominante</label>
+              <div class="flex items-center gap-2.5">
+                <input id="closet-color" type="color" value="#2b1b32" class="w-10 h-10 rounded-lg bg-transparent border border-white/20 cursor-pointer" />
+                <input id="closet-color-name" type="text" placeholder="Ex: Ameixa Escuro, Preto, Off-White" value="Ameixa Escuro" class="flex-1 bg-[#160e1b] border border-[#b89bc8]/35 rounded-xl px-3.5 py-2.5 text-white" />
+              </div>
+            </div>
+
+            <button type="submit" class="w-full bg-[#b79ac8] hover:bg-[#c8aed8] text-[#1c1123] font-semibold py-2.5 rounded-full shadow-md transition mt-2">
+              + Salvar no Meu Closet
+            </button>
+          </form>
+        </div>
+
+        <!-- Right Grid: User's Closet Pieces -->
+        <div class="lg:col-span-8 space-y-4">
+          <div id="closet-items-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       PAGE 4: PALETA PESSOAL (COLORIMETRIA SAZONAL + QUIZ DE ESTILO)
+       ===================================================================== -->
+  <div id="page-paleta" class="page-section hidden flex-1 py-8 px-4 sm:px-8 lg:px-14">
+    <div class="max-w-[1440px] mx-auto space-y-8">
+      
+      <div class="border-b border-white/10 pb-5 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <span class="text-[10.5px] tracking-[0.22em] uppercase text-[#b89bc8] font-semibold">COLORIMETRIA & IDENTIDADE</span>
+          <h1 class="heading-adaptive font-serif text-4xl sm:text-5xl text-white mt-1">Sua Paleta Pessoal</h1>
+          <p class="text-muted-adaptive text-xs sm:text-sm text-[#cbbad7] mt-1">
+            Descubra as cores que iluminam sua beleza natural e filtre toda a loja automaticamente.
+          </p>
+        </div>
+        <button onclick="filterStoreByActivePalette()" class="bg-[#b79ac8] hover:bg-[#c8aed8] text-[#1c1123] font-semibold text-xs px-6 py-2.5 rounded-full transition">
+          Ver Roupas da Minha Paleta na Loja →
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Left: 4 Seasonal Palettes Selector -->
+        <div class="lg:col-span-7 space-y-4">
+          <h2 class="heading-adaptive font-serif text-2xl text-white">Escolha ou explore as Cartelas Sazonais</h2>
+          <div id="palettes-list-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Right: Interactive Style & Color Quiz -->
+        <div class="lg:col-span-5 surface-card bg-gradient-to-br from-[#2a1b33] via-[#211528] to-[#190f1f] border border-[#b89bc8]/35 rounded-[22px] p-6 space-y-5 text-white">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] tracking-[0.2em] uppercase text-[#dfc9ee] font-semibold">TESTE RÁPIDO</span>
+            <span class="text-xs text-[#cbb0dc]">✦ Quiz Kloset</span>
+          </div>
+          <h3 class="font-serif italic text-3xl text-white leading-tight">
+            Descubra sua cartela e estilo em 3 passos
+          </h3>
+
+          <div class="space-y-4 text-xs">
+            <div>
+              <label class="block text-[#dfc9ee] font-medium mb-1.5">1. Qual contraste você prefere nos seus looks?</label>
+              <select id="quiz-q1" class="w-full bg-[#160e1b] border border-[#b89bc8]/40 rounded-xl px-3.5 py-2.5 text-white">
+                <option value="inverno_profundo">Alto contraste: tons escuros intensos (Preto, Vinho, Ameixa)</option>
+                <option value="verao_suave">Suave e delicado: tons pastéis e acinzentados (Lavanda, Rosa Antigo)</option>
+                <option value="outono_escuro">Quente e terroso: tons café, vinho quente, oliva e dourado</option>
+                <option value="inverno_frio">Frio e vibrante: violeta real, branco puro e marinho</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[#dfc9ee] font-medium mb-1.5">2. Qual acessório mais valoriza sua pele?</label>
+              <select id="quiz-q2" class="w-full bg-[#160e1b] border border-[#b89bc8]/40 rounded-xl px-3.5 py-2.5 text-white">
+                <option value="prata">Prata, Ouro Branco ou Ródio Negro</option>
+                <option value="rose">Ouro Rosé delicado ou Pérolas</option>
+                <option value="dourado">Ouro Amarelo ou Bronze Envelhecido</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[#dfc9ee] font-medium mb-1.5">3. Qual é a sua assinatura de estilo principal?</label>
+              <select id="quiz-q3" class="w-full bg-[#160e1b] border border-[#b89bc8]/40 rounded-xl px-3.5 py-2.5 text-white">
+                <option value="Editorial Urbano & Sofisticado">Editorial Urbano & Sofisticado</option>
+                <option value="Casual Chic Minimalista">Casual Chic Minimalista</option>
+                <option value="Romântico Contemporâneo">Romântico Contemporâneo</option>
+              </select>
+            </div>
+
+            <button onclick="runStyleQuiz()" class="w-full bg-[#b79ac8] hover:bg-[#c8aed8] text-[#1c1123] font-semibold py-3 rounded-full shadow-lg transition">
+              Revelar Minha Paleta & Estilo ✦
+            </button>
+
+            <div id="quiz-result-banner" class="hidden p-4 rounded-2xl bg-white/10 border border-[#dfc9ee]/40 space-y-2">
+              <!-- Populated after quiz -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       PAGE 5: LOOKS & IA (PROVADOR E CONSULTORA DE ESTILO COM IA)
+       ===================================================================== -->
+  <div id="page-looks" class="page-section hidden flex-1 py-8 px-4 sm:px-8 lg:px-14">
+    <div class="max-w-[1440px] mx-auto space-y-8">
+      
+      <div class="border-b border-white/10 pb-5">
+        <span class="text-[10.5px] tracking-[0.22em] uppercase text-[#b89bc8] font-semibold">INTELIGÊNCIA ARTIFICIAL KLOSET</span>
+        <h1 class="heading-adaptive font-serif text-4xl sm:text-5xl text-white mt-1">Consultoria de Looks & IA</h1>
+        <p class="text-muted-adaptive text-xs sm:text-sm text-[#cbbad7] mt-1">
+          Selecione a ocasião, o clima e deixe a IA criar um look completo harmonizado com sua paleta pessoal.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left Controls: AI Parameters -->
+        <div class="lg:col-span-4 surface-card bg-[#211528] border border-[#b89bc8]/35 rounded-[22px] p-6 space-y-4 text-white">
+          <span class="text-[10px] tracking-[0.2em] uppercase text-[#cbb0dc] font-semibold">CONFIGURAR SEU LOOK</span>
+          <h2 class="font-serif italic text-3xl text-white">Monte looks incríveis com a ajuda da IA</h2>
+
+          <div class="space-y-3.5 text-xs pt-2">
+            <div>
+              <label class="block text-[#d6c4e3] mb-1 font-medium">Para qual ocasião?</label>
+              <select id="ai-builder-occasion" class="w-full bg-[#160e1b] border border-[#b89bc8]/40 rounded-xl px-3.5 py-2.5 text-white">
+                <option value="noite">Jantar Elegante / Evento Noturno</option>
+                <option value="casual">Casual Chic / Dia a Dia Sofisticado</option>
+                <option value="trabalho">Trabalho / Reunião Executiva</option>
+                <option value="encontro">Encontro Especial / Fim de Semana</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[#d6c4e3] mb-1 font-medium">Condição Climática:</label>
+              <select id="ai-builder-weather" class="w-full bg-[#160e1b] border border-[#b89bc8]/40 rounded-xl px-3.5 py-2.5 text-white">
+                <option value="ameno">Clima Ameno / Nublado (22°C)</option>
+                <option value="frio">Clima Frio / Noite Fresca (15°C)</option>
+                <option value="quente">Dia Quente / Ensolarado (28°C)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[#d6c4e3] mb-1 font-medium">Harmonia de Cores:</label>
+              <select id="ai-builder-palette" class="w-full bg-[#160e1b] border border-[#b89bc8]/40 rounded-xl px-3.5 py-2.5 text-white">
+                <option value="personal">Usar Minha Paleta Ativa (Inverno Profundo)</option>
+                <option value="monochrome">Monocromático Dark Luxury</option>
+                <option value="contrast">Contraste Suave Lavanda & Preto</option>
+              </select>
+            </div>
+
+            <button onclick="generateCompleteAILook()" class="w-full bg-[#b79ac8] hover:bg-[#c8aed8] text-[#1c1123] font-semibold py-3 rounded-full shadow-lg transition mt-2">
+              Gerar Combinação com IA ✦
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Output: Complete 3-Piece Generated Outfit -->
+        <div id="ai-generated-outfit-container" class="lg:col-span-8 surface-card bg-[#211528] border border-[#b89bc8]/35 rounded-[22px] p-6 text-white">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       PAGE 6: CLIMA (RECOMENDADOR DE LOOKS POR CIDADE E TEMPERATURA)
+       ===================================================================== -->
+  <div id="page-clima" class="page-section hidden flex-1 py-8 px-4 sm:px-8 lg:px-14">
+    <div class="max-w-[1440px] mx-auto space-y-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-white/10 pb-5">
+        <div>
+          <span class="text-[10.5px] tracking-[0.22em] uppercase text-[#b89bc8] font-semibold">METEOROLOGIA & MODA</span>
+          <h1 class="heading-adaptive font-serif text-4xl sm:text-5xl text-white mt-1">Clima & Looks do Dia</h1>
+          <p class="text-muted-adaptive text-xs sm:text-sm text-[#cbbad7] mt-1">
+            Recomendações inteligentes de tecidos, terceiras peças e calçados de acordo com a previsão da sua cidade.
+          </p>
+        </div>
+
+        <!-- City Selector Pills -->
+        <div class="flex flex-wrap gap-2">
+          <button onclick="selectWeatherCity('maringa')" id="city-btn-maringa" class="city-pill bg-[#b79ac8] text-[#1c1123] font-semibold text-xs px-4 py-2 rounded-full transition">Maringá - PR (22°C)</button>
+          <button onclick="selectWeatherCity('curitiba')" id="city-btn-curitiba" class="city-pill bg-white/10 text-white hover:bg-white/20 text-xs px-4 py-2 rounded-full transition">Curitiba - PR (15°C)</button>
+          <button onclick="selectWeatherCity('saopaulo')" id="city-btn-saopaulo" class="city-pill bg-white/10 text-white hover:bg-white/20 text-xs px-4 py-2 rounded-full transition">São Paulo - SP (24°C)</button>
+          <button onclick="selectWeatherCity('rio')" id="city-btn-rio" class="city-pill bg-white/10 text-white hover:bg-white/20 text-xs px-4 py-2 rounded-full transition">Rio de Janeiro - RJ (29°C)</button>
+        </div>
+      </div>
+
+      <!-- Weather Forecast & Outfit Recommendation Box -->
+      <div id="weather-page-content" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Populated dynamically via JS -->
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       PAGE 7: FAVORITOS (ITENS E LOOKS SALVOS PELO USUÁRIO)
+       ===================================================================== -->
+  <div id="page-favoritos" class="page-section hidden flex-1 py-8 px-4 sm:px-8 lg:px-14">
+    <div class="max-w-[1440px] mx-auto space-y-6">
+      <div class="border-b border-white/10 pb-5 flex items-end justify-between">
+        <div>
+          <span class="text-[10.5px] tracking-[0.22em] uppercase text-[#b89bc8] font-semibold">SUA LISTA DE DESEJOS</span>
+          <h1 class="heading-adaptive font-serif text-4xl sm:text-5xl text-white mt-1">Seus Favoritos ✦</h1>
+          <p class="text-muted-adaptive text-xs sm:text-sm text-[#cbbad7] mt-1">
+            Guarde seus looks e peças preferidas para comprar quando quiser ou inspirar seu closet.
+          </p>
+        </div>
+        <button onclick="navigateTo('loja')" class="bg-[#b79ac8] text-[#1c1123] font-semibold text-xs px-5 py-2.5 rounded-full">
+          Explorar Mais Peças →
+        </button>
+      </div>
+
+      <div id="favorites-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =====================================================================
+       SLIDE-OUT SHOPPING BAG DRAWER (SACOLA DE COMPRAS LATERAL)
+       ===================================================================== -->
+  <div id="cart-drawer-backdrop" onclick="toggleCartDrawer(false)" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 hidden transition-opacity"></div>
+  <aside id="cart-drawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-[#1e1324] border-l border-[#b89bc8]/30 text-[#f3ecf8] z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
+    
+    <!-- Drawer Header -->
+    <div class="p-5 border-b border-white/10 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <span class="text-[#cbb0dc]">✦</span>
+        <h2 class="font-serif text-2xl text-white">Sua Sacola Kloset</h2>
+      </div>
+      <button onclick="toggleCartDrawer(false)" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/80">✕</button>
+    </div>
+
+    <!-- Free Shipping Bar -->
+    <div class="bg-[#291a31] px-5 py-2.5 text-[11px] text-[#dfc9ee] flex items-center gap-2 border-b border-white/5">
+      <span>✓ Parabéns! Você ganhou <strong>Frete Grátis</strong> para todo o Brasil.</span>
+    </div>
+
+    <!-- Cart Items List -->
+    <div id="cart-items-container" class="p-5 flex-1 overflow-y-auto space-y-4">
+      <!-- Populated via JS -->
+    </div>
+
+    <!-- Drawer Footer -->
+    <div class="p-5 border-t border-white/10 bg-[#170e1c] space-y-3">
+      <div class="flex items-center justify-between text-sm">
+        <span class="text-[#cbbad7]">Subtotal:</span>
+        <strong id="cart-subtotal" class="font-serif text-2xl text-white">R$ 609,80</strong>
+      </div>
+      <button onclick="checkoutCart()" class="w-full bg-[#b79ac8] hover:bg-[#c8aed8] text-[#1c1123] font-semibold text-xs py-3.5 rounded-full shadow-lg transition">
+        Finalizar Compra Segura →
+      </button>
+    </div>
+  </aside>
+
+
+  <!-- =====================================================================
+       MODAL DE INFORMAÇÕES & EXPORTAÇÃO PARA GITHUB
+       ===================================================================== -->
+  <div id="info-modal-backdrop" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-[#221529] border border-[#b89bc8]/40 text-[#f3ecf8] rounded-3xl max-w-lg w-full p-6 sm:p-8 relative shadow-2xl">
+      <button onclick="closeInfoModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/80">✕</button>
+      <div id="info-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast-msg" class="fixed bottom-6 right-6 z-50 bg-[#2b1b32] border border-[#b89bc8]/50 text-[#f3ecf8] px-4 py-3 rounded-2xl shadow-2xl text-xs flex items-center gap-2.5 opacity-0 pointer-events-none transition-opacity duration-300">
+    <span class="text-[#cbb0dc]">✦</span>
+    <span id="toast-text">Atualizado com sucesso!</span>
+  </div>
+
+
+  <!-- =====================================================================
+       GLOBAL FOOTER (PRESENTE EM TODAS AS PÁGINAS)
+       ===================================================================== -->
+  <footer class="w-full bg-[#120b16] border-t border-white/10 text-[#b6a3c0] py-10 px-4 sm:px-8 lg:px-14 mt-auto">
+    <div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 text-xs">
+      
+      <div class="space-y-3">
+        <div class="flex items-center gap-2">
+          <span class="font-serif text-3xl text-white">Kloset</span>
+          <span class="text-[#cbb2dc]">✦</span>
+        </div>
+        <p class="text-[#9e89ab] leading-relaxed">
+          Moda inteligente. Estilo real. Seu closet, sua paleta pessoal e curadoria de looks em um só lugar.
+        </p>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="text-white font-semibold uppercase tracking-wider text-[11px]">Navegação</h4>
+        <ul class="space-y-1.5">
+          <li><button onclick="navigateTo('inicio')" class="hover:text-white transition">Início</button></li>
+          <li><button onclick="navigateTo('loja')" class="hover:text-white transition">Loja & Curadoria</button></li>
+          <li><button onclick="navigateTo('closet')" class="hover:text-white transition">Seu Closet Digital</button></li>
+          <li><button onclick="navigateTo('paleta')" class="hover:text-white transition">Paleta Pessoal & Quiz</button></li>
+        </ul>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="text-white font-semibold uppercase tracking-wider text-[11px]">Experiência IA</h4>
+        <ul class="space-y-1.5">
+          <li><button onclick="navigateTo('looks')" class="hover:text-white transition">Consultoria de Looks IA</button></li>
+          <li><button onclick="navigateTo('clima')" class="hover:text-white transition">Clima & Estilo (Maringá - PR)</button></li>
+          <li><button onclick="navigateTo('favoritos')" class="hover:text-white transition">Meus Favoritos</button></li>
+        </ul>
+      </div>
+
+      <div class="space-y-3">
+        <h4 class="text-white font-semibold uppercase tracking-wider text-[11px]">Seu Repositório GitHub</h4>
+        <p class="text-[#9e89ab]">
+          Pronto para publicar em <code>qeloize-elyot/kloset-styles</code>.
+        </p>
+        <button onclick="downloadIndexHtmlFile()" class="bg-[#b79ac8] hover:bg-[#c8aed8] text-[#1c1123] font-semibold px-4 py-2 rounded-full inline-flex items-center gap-2 transition">
+          <span>⬇ Baixar index.html para GitHub</span>
+        </button>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- =====================================================================
+       COMPLETE APPLICATION LOGIC (JAVASCRIPT)
+       ===================================================================== -->
+  <script>
+    // ---------------------------------------------------------------------
+    // 1. CATALOG PRODUCTS & TRENDING LOOKS DATA
+    // ---------------------------------------------------------------------
+    const catalogProducts = [
+      {
+        id: 1,
+        title: "Top Tomara que Caia Vinho & Alfaiataria",
+        category: "blusas",
+        price: 289.90,
+        palette: "inverno_profundo",
+        paletteLabel: "Inverno Profundo",
+        colorHex: "#591c2b",
+        liked: true,
+        trending: true,
+        image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80",
+        filterStyle: "sepia(0.25) hue-rotate(-35deg) saturate(1.1) brightness(0.82) contrast(1.15)"
+      },
+      {
+        id: 2,
+        title: "Blusa Ombro a Ombro Preta & Jeans Escuro",
+        category: "blusas",
+        price: 319.90,
+        palette: "inverno_profundo",
+        paletteLabel: "Inverno Profundo",
+        colorHex: "#1c1321",
+        liked: false,
+        trending: true,
+        image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=600&q=80",
+        filterStyle: "grayscale(0.75) brightness(0.84) contrast(1.2)"
+      },
+      {
+        id: 3,
+        title: "T-Shirt Branca Fitted & Calça Alfaiataria Creme",
+        category: "calcas",
+        price: 349.90,
+        palette: "verao_suave",
+        paletteLabel: "Verão Suave",
+        colorHex: "#d3bacb",
+        liked: false,
+        trending: true,
+        image: "https://images.unsplash.com/photo-1485968579580-b6d095142e6e?auto=format&fit=crop&w=600&q=80",
+        filterStyle: "saturate(0.55) brightness(0.92) contrast(1.08)"
+      },
+      {
+        id: 4,
+        title: "Conjunto Regata Fina & Calça Cinto Preta",
+        category: "conjuntos",
+        price: 429.90,
+        palette: "inverno_profundo",
+        paletteLabel: "Inverno Profundo",
+        colorHex: "#231826",
+        liked: true,
+        trending: true,
+        image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80",
+        filterStyle: "grayscale(0.65) brightness(0.82) contrast(1.2)"
+      },
+      {
+        id: 5,
+        title: "Vestido Midi Plum Drapeado Noturno",
+        category: "vestidos",
+        price: 489.90,
+        palette: "inverno_profundo",
+        paletteLabel: "Inverno Profundo",
+        colorHex: "#3d2847",
+        liked: false,
+        trending: false,
+        image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=600&q=80",
+        filterStyle: "saturate(0.45) brightness(0.85) contrast(1.15)"
+      },
+      {
+        id: 6,
+        title: "Jaqueta Biker Couro Preta Editorial",
+        category: "casacos",
+        price: 599.90,
+        palette: "inverno_profundo",
+        paletteLabel: "Inverno Profundo",
+        colorHex: "#1b1220",
+        liked: false,
+        trending: false,
+        image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=600&q=80",
+        filterStyle: "grayscale(0.7) brightness(0.82) contrast(1.2)"
+      },
+      {
+        id: 7,
+        title: "Saia Plissada Mini Alfaiataria Noite",
+        category: "saias",
+        price: 259.90,
+        palette: "verao_suave",
+        paletteLabel: "Verão Suave",
+        colorHex: "#2a1c2e",
+        liked: false,
+        trending: false,
+        image: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=600&q=80",
+        filterStyle: "grayscale(0.8) brightness(0.8) contrast(1.2)"
+      },
+      {
+        id: 8,
+        title: "Bolsa Estruturada Couro Monograma Kloset",
+        category: "bolsas",
+        price: 459.90,
+        palette: "outono_escuro",
+        paletteLabel: "Outono Escuro",
+        colorHex: "#231826",
+        liked: false,
+        trending: false,
+        image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=600&q=80",
+        filterStyle: "grayscale(0.75) brightness(0.78) contrast(1.25)"
+      },
+      {
+        id: 9,
+        title: "Scarpin Salto Fino Verniz Noir",
+        category: "calcados",
+        price: 389.90,
+        palette: "inverno_frio",
+        paletteLabel: "Inverno Frio",
+        colorHex: "#18101d",
+        liked: false,
+        trending: false,
+        image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=600&q=80",
+        filterStyle: "grayscale(0.85) brightness(0.8) contrast(1.25)"
+      },
+      {
+        id: 10,
+        title: "Óculos de Sol Retangular Editorial Dark",
+        category: "acessorios",
+        price: 279.90,
+        palette: "inverno_profundo",
+        paletteLabel: "Inverno Profundo",
+        colorHex: "#221329",
+        liked: false,
+        trending: false,
+        image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=600&q=80",
+        filterStyle: "grayscale(0.8) brightness(0.8) contrast(1.2)"
+      },
+      {
+        id: 11,
+        title: "Corset Acetinado Lavanda Noturno",
+        category: "blusas",
+        price: 299.90,
+        palette: "verao_suave",
+        paletteLabel: "Verão Suave",
+        colorHex: "#bfa3be",
+        liked: false,
+        trending: false,
+        image: "https://images.unsplash.com/photo-1564257631407-4deb1f99d992?auto=format&fit=crop&w=600&q=80",
+        filterStyle: "grayscale(0.6) brightness(0.82) contrast(1.2)"
+      },
+      {
+        id: 12,
+        title: "Calça Wide Leg Jeans Cinza Chumbo",
+        category: "calcas",
+        price: 339.90,
+        palette: "inverno_frio",
+        paletteLabel: "Inverno Frio",
+        colorHex: "#3d2847",
+        liked: false,
+        trending: false,
+        image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=80",
+        filterStyle: "grayscale(0.75) brightness(0.82) contrast(1.15)"
+      }
+    ];
+
+    // ---------------------------------------------------------------------
+    // 2. SEASONAL PALETTES DATA
+    // ---------------------------------------------------------------------
+    const seasonalPalettes = [
+      {
+        id: "inverno_profundo",
+        name: "Inverno Profundo",
+        desc: "Tons intensos, escuros e sofisticados que criam alto contraste e iluminam peles de subtom frio ou neutro-frio.",
+        colors: [
+          { hex: "#231826", name: "Ameixa Noite" },
+          { hex: "#591c2b", name: "Burgundy" },
+          { hex: "#bfa3be", name: "Malva Frio" },
+          { hex: "#d3bacb", name: "Rosa Gelo" },
+          { hex: "#140d18", name: "Preto Puro" }
+        ]
+      },
+      {
+        id: "verao_suave",
+        name: "Verão Suave",
+        desc: "Cores elegantes, lavandas acinzentados e tons pastéis aveludados de baixo contraste e muita delicadeza.",
+        colors: [
+          { hex: "#b89bc8", name: "Lavanda Suave" },
+          { hex: "#d8c2ce", name: "Rosa Antigo" },
+          { hex: "#8c7a99", name: "Malva Acinzentado" },
+          { hex: "#e6dff0", name: "Gelo Lilás" },
+          { hex: "#4a3b54", name: "Ameixa Suave" }
+        ]
+      },
+      {
+        id: "outono_escuro",
+        name: "Outono Escuro",
+        desc: "Tons terrosos profundos, vinho quente, café e dourado envelhecido para uma presença marcante e acolhedora.",
+        colors: [
+          { hex: "#3b2322", name: "Café Intenso" },
+          { hex: "#6b2737", name: "Vinho Quente" },
+          { hex: "#8f6b58", name: "Caramelo Escuro" },
+          { hex: "#cbb39b", name: "Areia Dourada" },
+          { hex: "#2a1c2e", name: "Berinjela" }
+        ]
+      },
+      {
+        id: "inverno_frio",
+        name: "Inverno Frio",
+        desc: "Cores puras, frias e vibrantes como violeta real, azul marinho profundo e cinza gelo.",
+        colors: [
+          { hex: "#3c1e54", name: "Violeta Real" },
+          { hex: "#1c2541", name: "Marinho Noite" },
+          { hex: "#7a5980", name: "Orquídea Frio" },
+          { hex: "#f0edf5", name: "Branco Puro" },
+          { hex: "#2b1b32", name: "Noir" }
+        ]
+      }
+    ];
+
+    // ---------------------------------------------------------------------
+    // 3. STATE MANAGEMENT (ACTIVE PAGE, CART, CLOSET, PALETTE, WEATHER)
+    // ---------------------------------------------------------------------
+    let activePage = 'inicio';
+    let activeStoreCategory = 'todas';
+    let filterOnlyActivePalette = false;
+    let searchQuery = '';
+    let activePaletteId = 'inverno_profundo';
+    let isLightTheme = false;
+
+    // Shopping Bag State (Pre-populated with 2 items to match badge '2' in Image 1)
+    let shoppingCart = [
+      { productId: 1, qty: 1 },
+      { productId: 4, qty: 1 }
+    ];
+
+    // User's Digital Closet (Persisted in localStorage)
+    const defaultClosetItems = [
+      { id: 101, name: "Jaqueta Biker Couro Preta", category: "casacos", season: "Meia-estação (22°C)", colorHex: "#1b1220", colorName: "Preto Intenso", image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=400&q=80" },
+      { id: 102, name: "Top Tomara que Caia Vinho", category: "blusas", season: "Todas as estações", colorHex: "#591c2b", colorName: "Vinho Burgundy", image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=400&q=80" },
+      { id: 103, name: "Calça Alfaiataria Preta Cinto", category: "calcas", season: "Todas as estações", colorHex: "#231826", colorName: "Preto Noir", image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=400&q=80" },
+      { id: 104, name: "Vestido Curto Drapeado Ameixa", category: "vestidos", season: "Meia-estação (22°C)", colorHex: "#3d2847", colorName: "Ameixa Profundo", image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80" },
+      { id: 105, name: "Bolsa Estruturada Couro Preta", category: "bolsas", season: "Todas as estações", colorHex: "#1c1321", colorName: "Preto Clássico", image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=80" },
+      { id: 106, name: "Óculos Retangular Dark Luxury", category: "acessorios", season: "Dias Quentes (28°C)", colorHex: "#221329", colorName: "Ameixa Escuro", image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=400&q=80" }
+    ];
+
+    let userCloset = JSON.parse(localStorage.getItem('kloset_user_items')) || defaultClosetItems;
+
+    function saveClosetToStorage() {
+      localStorage.setItem('kloset_user_items', JSON.stringify(userCloset));
+      updateBadges();
+    }
+
+    // ---------------------------------------------------------------------
+    // 4. SPA NAVIGATION & THEME SWITCHER
+    // ---------------------------------------------------------------------
+    function navigateTo(pageId) {
+      activePage = pageId;
+      const pages = ['inicio', 'loja', 'closet', 'paleta', 'looks', 'clima', 'favoritos'];
+      pages.forEach(p => {
+        const el = document.getElementById(`page-${p}`);
+        if (el) {
+          if (p === pageId) el.classList.remove('hidden');
+          else el.classList.add('hidden');
+        }
+      });
+
+      // Update active navbar pill
+      document.querySelectorAll('.nav-pill').forEach(btn => {
+        const target = btn.getAttribute('data-nav');
+        if (target === pageId) {
+          btn.className = 'nav-pill bg-[#b79ac8] text-[#1c1123] font-semibold px-5 py-1.5 rounded-full shadow-sm transition';
+        } else {
+          btn.className = 'nav-pill text-[#dcd0e5] text-muted-adaptive hover:text-white hover:bg-white/10 px-4 py-1.5 rounded-full transition';
+        }
+      });
+
+      // Trigger section-specific renders
+      if (pageId === 'inicio') renderHomeTrendingLooks();
+      if (pageId === 'loja') renderStoreCatalog();
+      if (pageId === 'closet') renderClosetItems();
+      if (pageId === 'paleta') renderPalettesSection();
+      if (pageId === 'looks') generateCompleteAILook();
+      if (pageId === 'clima') selectWeatherCity(currentWeatherCityKey);
+      if (pageId === 'favoritos') renderFavoritesPage();
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleThemeMode() {
+      isLightTheme = !isLightTheme;
+      document.body.classList.toggle('theme-light', isLightTheme);
+      const icon = document.getElementById('theme-toggle-icon');
+      const label = document.getElementById('theme-toggle-label');
+      if (isLightTheme) {
+        icon.textContent = '☀️';
+        label.textContent = 'Versão 2: Clara';
+        showToast('Modo Claro Lavanda Editorial ativado (Imagem 2)');
+      } else {
+        icon.textContent = '🌙';
+        label.textContent = 'Versão 1: Escura';
+        showToast('Modo Escuro Ameixa Luxury ativado (Imagem 1)');
+      }
+    }
+
+    function toggleMobileMenu() {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    }
+
+    // ---------------------------------------------------------------------
+    // 5. HOME PAGE: HERO SLIDER & TRENDING LOOKS
+    // ---------------------------------------------------------------------
+    const heroSlides = [
+      {
+        kicker: "DESCUBRA • ORGANIZE • SE VISTA BEM",
+        subtitle: "Vista sua melhor versão.",
+        desc: "Descubra looks, organize seu guarda-roupa e receba sugestões personalizadas para cada ocasião.",
+        img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=85"
+      },
+      {
+        kicker: "INTELIGÊNCIA ARTIFICIAL • SEU CLOSET",
+        subtitle: "Seu closet, seu estilo, em um só lugar.",
+        desc: "Combine peças que você já tem em casa com lançamentos filtrados para a sua cartela de coloração pessoal.",
+        img: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1000&q=85"
+      },
+      {
+        kicker: "COLORIMETRIA PESSOAL • INVERNO & VERÃO",
+        subtitle: "Cores que iluminam quem você é.",
+        desc: "Faça nosso teste de paleta pessoal e compre apenas peças que valorizam seu contraste natural.",
+        img: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1000&q=85"
+      },
+      {
+        kicker: "CLIMA EM TEMPO REAL • MARINGÁ & BRASIL",
+        subtitle: "Looks perfeitos para o clima de hoje.",
+        desc: "De dias nublados a noites elegantes: saiba exatamente o que vestir antes mesmo de sair de casa.",
+        img: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=1000&q=85"
+      }
+    ];
+    let currentSlideIdx = 0;
+
+    function cycleHeroSlide(dir) {
+      currentSlideIdx = (currentSlideIdx + dir + heroSlides.length) % heroSlides.length;
+      const s = heroSlides[currentSlideIdx];
+      document.getElementById('hero-kicker').textContent = s.kicker;
+      document.getElementById('hero-subtitle').textContent = s.subtitle;
+      document.getElementById('hero-desc').textContent = s.desc;
+      document.getElementById('hero-model-img').src = s.img;
+
+      const numStr = `0${currentSlideIdx + 1}`;
+      document.getElementById('hero-slide-counter').textContent = `${numStr} / 04`;
+      document.getElementById('hero-ig-num').textContent = numStr;
+      document.getElementById('hero-slide-progress').style.width = `${((currentSlideIdx + 1) / 4) * 100}%`;
+    }
+
+    function renderHomeTrendingLooks() {
+      const grid = document.getElementById('home-looks-grid');
+      if (!grid) return;
+      const trending = catalogProducts.slice(0, 4);
+
+      grid.innerHTML = trending.map(look => `
+        <div class="look-card group relative rounded-[18px] overflow-hidden bg-[#26182c] aspect-[3/4.15] cursor-pointer" onclick="addToCart(${look.id})">
+          <img 
+            src="${look.image}" 
+            alt="${look.title}"
+            class="w-full h-full object-cover object-top group-hover:scale-105 transition duration-500"
+            style="filter: ${look.filterStyle};"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-65 group-hover:opacity-90 transition"></div>
+
+          <!-- Top-Right Heart Button -->
+          <button 
+            onclick="event.stopPropagation(); toggleFavorite(${look.id})" 
+            aria-label="Favoritar"
+            class="absolute top-2.5 right-2.5 w-7 h-7 rounded-full flex items-center justify-center transition transform active:scale-90 ${
+              look.liked 
+                ? 'bg-[#e3c8d8] text-[#4a2038] shadow-md' 
+                : 'bg-black/25 hover:bg-black/50 text-white/85 backdrop-blur-xs border border-white/20'
+            }"
+          >
+            <svg class="w-3.5 h-3.5" fill="${look.liked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+          </button>
+
+          <!-- Bottom Quick Info & Buy Action -->
+          <div class="absolute bottom-2.5 left-2.5 right-2.5 flex flex-col justify-end">
+            <p class="text-[11px] font-medium text-white leading-tight line-clamp-1">${look.title}</p>
+            <div class="flex items-center justify-between mt-1">
+              <span class="text-[10.5px] text-[#dfc9ee] font-semibold">R$ ${look.price.toFixed(2).replace('.', ',')}</span>
+              <span class="text-[9.5px] bg-white/15 hover:bg-[#b79ac8] hover:text-[#1c1123] text-white px-2 py-0.5 rounded-full transition">+ Sacola</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function selectCategoryFromHome(cat, btnEl) {
+      document.querySelectorAll('.cat-item').forEach(el => el.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      activeStoreCategory = cat;
+      navigateTo('loja');
+    }
+
+    // ---------------------------------------------------------------------
+    // 6. LOJA (E-COMMERCE CATALOG, FILTERS & SEARCH)
+    // ---------------------------------------------------------------------
+    const storeCategoriesList = [
+      { id: 'todas', label: 'Todas as categorias' },
+      { id: 'vestidos', label: 'Vestidos' },
+      { id: 'blusas', label: 'Blusas' },
+      { id: 'casacos', label: 'Casacos' },
+      { id: 'calcas', label: 'Calças' },
+      { id: 'saias', label: 'Saias' },
+      { id: 'conjuntos', label: 'Conjuntos' },
+      { id: 'bolsas', label: 'Bolsas' },
+      { id: 'calcados', label: 'Calçados' },
+      { id: 'acessorios', label: 'Acessórios' }
+    ];
+
+    function renderStoreCatalog() {
+      const pillsContainer = document.getElementById('store-category-pills');
+      const grid = document.getElementById('store-products-grid');
+      if (!pillsContainer || !grid) return;
+
+      // Render Category Pills
+      pillsContainer.innerHTML = storeCategoriesList.map(c => `
+        <button 
+          onclick="activeStoreCategory = '${c.id}'; renderStoreCatalog()" 
+          class="text-xs px-4 py-2 rounded-full whitespace-nowrap transition ${
+            activeStoreCategory === c.id 
+              ? 'bg-[#b79ac8] text-[#1c1123] font-semibold shadow-sm' 
+              : 'bg-white/5 hover:bg-white/15 text-[#d8c6e4] text-muted-adaptive border border-white/10'
+          }"
+        >
+          ${c.label}
+        </button>
+      `).join('');
+
+      // Filter products
+      let list = [...catalogProducts];
+      if (activeStoreCategory !== 'todas') {
+        list = list.filter(p => p.category === activeStoreCategory);
+      }
+      if (filterOnlyActivePalette) {
+        list = list.filter(p => p.palette === activePaletteId);
+      }
+      if (searchQuery.trim() !== '') {
+        const q = searchQuery.toLowerCase();
+        list = list.filter(p => p.title.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+      }
+
+      // Sort products
+      const sortVal = document.getElementById('store-sort')?.value || 'destaque';
+      if (sortVal === 'menor') list.sort((a, b) => a.price - b.price);
+      if (sortVal === 'maior') list.sort((a, b) => b.price - a.price);
+
+      if (list.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-12 text-center space-y-3">
+            <p class="font-serif text-2xl text-[#dfc9ee]">Nenhuma peça encontrada para este filtro.</p>
+            <button onclick="activeStoreCategory='todas'; filterOnlyActivePalette=false; searchQuery=''; renderStoreCatalog()" class="bg-[#b79ac8] text-[#1c1123] text-xs font-semibold px-5 py-2 rounded-full">
+              Limpar Filtros
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = list.map(prod => `
+        <div class="surface-card bg-[#211528] border border-[#b89bc8]/25 rounded-[20px] overflow-hidden flex flex-col justify-between group hover:border-[#b89bc8]/60 transition shadow-lg">
+          <div class="relative aspect-[3/3.8] overflow-hidden bg-[#170f1c]">
+            <img 
+              src="${prod.image}" 
+              alt="${prod.title}" 
+              class="w-full h-full object-cover object-top group-hover:scale-105 transition duration-500"
+              style="filter: ${prod.filterStyle};"
+            />
+            <span class="absolute top-3 left-3 bg-[#1c1123]/85 backdrop-blur-xs border border-[#b89bc8]/35 text-[#dfc9ee] text-[10px] px-2.5 py-1 rounded-full">
+              ✦ ${prod.paletteLabel}
+            </span>
+            <button 
+              onclick="toggleFavorite(${prod.id})" 
+              class="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition ${
+                prod.liked ? 'bg-[#e3c8d8] text-[#4a2038]' : 'bg-black/35 text-white hover:bg-black/60'
+              }"
+            >
+              <svg class="w-4 h-4" fill="${prod.liked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex items-center justify-between text-[10.5px] text-[#b6a2c4] text-muted-adaptive uppercase tracking-wider">
+                <span>${prod.category}</span>
+                <span class="w-3.5 h-3.5 rounded-full border border-white/30 inline-block" style="background:${prod.colorHex}"></span>
+              </div>
+              <h3 class="heading-adaptive font-serif text-xl text-white leading-snug mt-1">${prod.title}</h3>
+              <p class="text-sm font-semibold text-[#dfc9ee] heading-adaptive mt-1">
+                R$ ${prod.price.toFixed(2).replace('.', ',')}
+                <span class="text-[10px] font-normal text-[#a792b5] block">ou 6x de R$ ${(prod.price / 6).toFixed(2).replace('.', ',')} sem juros</span>
+              </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <button onclick="addToCart(${prod.id})" class="bg-[#b79ac8] hover:bg-[#c8aed8] text-[#1c1123] font-semibold text-xs py-2 px-3 rounded-full transition">
+                Comprar
+              </button>
+              <button onclick="addStoreProductToCloset(${prod.id})" class="border border-[#b89bc8]/40 hover:border-white text-xs text-[#e5d6f0] text-muted-adaptive py-2 px-3 rounded-full transition">
+                + Meu Closet
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleStorePaletteFilter() {
+      filterOnlyActivePalette = !filterOnlyActivePalette;
+      const btn = document.getElementById('btn-filter-palette');
+      if (filterOnlyActivePalette) {
+        btn.className = 'text-xs px-4 py-2 rounded-full bg-[#b79ac8] text-[#1c1123] font-semibold inline-flex items-center gap-2 transition';
+      } else {
+        btn.className = 'text-xs px-4 py-2 rounded-full border border-[#b89bc8]/45 bg-white/5 hover:bg-white/15 text-[#e6d6f2] inline-flex items-center gap-2 transition';
+      }
+      renderStoreCatalog();
+    }
+
+    function handleGlobalSearch(val) {
+      searchQuery = val;
+      if (activePage !== 'loja' && val.trim().length > 1) {
+        navigateTo('loja');
+      } else if (activePage === 'loja') {
+        renderStoreCatalog();
+      }
+    }
+
+    // ---------------------------------------------------------------------
+    // 7. SEU CLOSET (DIGITAL WARDROBE MANAGER)
+    // ---------------------------------------------------------------------
+    function renderClosetItems() {
+      const grid = document.getElementById('closet-items-grid');
+      const badge = document.getElementById('closet-count-badge');
+      if (!grid) return;
+
+      badge.textContent = `${userCloset.length} ${userCloset.length === 1 ? 'peça' : 'peças'} no seu closet`;
+
+      grid.innerHTML = userCloset.map(item => `
+        <div class="surface-card bg-[#211528] border border-[#b89bc8]/25 rounded-2xl overflow-hidden flex flex-col justify-between shadow-md">
+          <div class="relative h-44 bg-[#160e1b]">
+            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" style="filter: grayscale(0.4) contrast(1.1);" />
+            <span class="absolute top-2.5 left-2.5 bg-black/65 backdrop-blur-xs text-[10px] text-[#dfc9ee] px-2.5 py-0.5 rounded-full uppercase">
+              ${item.category}
+            </span>
+            <button onclick="removeClosetItem(${item.id})" title="Remover peça" class="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-black/60 hover:bg-red-500/80 text-white text-xs flex items-center justify-center transition">
+              ✕
+            </button>
+          </div>
+          <div class="p-4 space-y-2">
+            <div class="flex items-center gap-2">
+              <span class="w-3.5 h-3.5 rounded-full border border-white/30 shrink-0" style="background:${item.colorHex}"></span>
+              <span class="text-[11px] text-[#b9a5c6] text-muted-adaptive">${item.colorName} • ${item.season}</span>
+            </div>
+            <h3 class="heading-adaptive font-serif text-xl text-white leading-tight">${item.name}</h3>
+            <button onclick="navigateTo('looks')" class="w-full mt-2 border border-[#b89bc8]/40 hover:bg-[#b79ac8] hover:text-[#1c1123] text-xs py-1.5 rounded-full transition">
+              Combinar com IA →
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addClosetItem(e) {
+      e.preventDefault();
+      const name = document.getElementById('closet-name').value.trim();
+      const category = document.getElementById('closet-category').value;
+      const season = document.getElementById('closet-season').value;
+      const colorHex = document.getElementById('closet-color').value;
+      const colorName = document.getElementById('closet-color-name').value.trim() || 'Tom Personalizado';
+
+      const catImages = {
+        blusas: "https://images.unsplash.com/photo-1564257631407-4deb1f99d992?auto=format&fit=crop&w=400&q=80",
+        vestidos: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&w=400&q=80",
+        casacos: "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=400&q=80",
+        calcas: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=400&q=80",
+        saias: "https://images.unsplash.com/photo-1583496661160-fb5886a0aaaa?auto=format&fit=crop&w=400&q=80",
+        calcados: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=400&q=80",
+        bolsas: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=400&q=80",
+        acessorios: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=400&q=80"
+      };
+
+      userCloset.unshift({
+        id: Date.now(),
+        name,
+        category,
+        season,
+        colorHex,
+        colorName,
+        image: catImages[category] || catImages.blusas
+      });
+
+      saveClosetToStorage();
+      renderClosetItems();
+      document.getElementById('closet-name').value = '';
+      showToast(`"${name}" adicionado ao seu Closet Digital!`);
+    }
+
+    function addStoreProductToCloset(prodId) {
+      const p = catalogProducts.find(item => item.id === prodId);
+      if (!p) return;
+      userCloset.unshift({
+        id: Date.now(),
+        name: p.title,
+        category: p.category,
+        season: "Todas as estações",
+        colorHex: p.colorHex,
+        colorName: p.paletteLabel,
+        image: p.image
+      });
+      saveClosetToStorage();
+      showToast(`Peça salva no seu Closet Digital ✦`);
+    }
+
+    function removeClosetItem(id) {
+      userCloset = userCloset.filter(item => item.id !== id);
+      saveClosetToStorage();
+      renderClosetItems();
+      showToast('Peça removida do seu closet');
+    }
+
+    // ---------------------------------------------------------------------
+    // 8. PALETA PESSOAL & QUIZ INTERATIVO
+    // ---------------------------------------------------------------------
+    function renderPalettesSection() {
+      const container = document.getElementById('palettes-list-container');
+      if (!container) return;
+
+      container.innerHTML = seasonalPalettes.map(pal => {
+        const isSelected = pal.id === activePaletteId;
+        return `
+          <div 
+            onclick="selectPersonalPalette('${pal.id}')"
+            class="surface-card cursor-pointer rounded-[20px] p-5 border transition ${
+              isSelected 
+                ? 'bg-[#2d1d38] border-[#dfc9ee] shadow-xl' 
+                : 'bg-[#211528] border-[#b89bc8]/25 hover:border-[#b89bc8]/60'
+            }"
+          >
+            <div class="flex items-center justify-between">
+              <h3 class="heading-adaptive font-serif text-2xl text-white">${pal.name}</h3>
+              ${isSelected ? '<span class="text-[10px] bg-[#b79ac8] text-[#1c1123] font-bold px-2.5 py-0.5 rounded-full">✓ Sua Paleta</span>' : ''}
+            </div>
+            <p class="text-muted-adaptive text-xs text-[#cbbad7] mt-2 leading-relaxed">${pal.desc}</p>
+            <div class="flex items-center gap-2.5 mt-4">
+              ${pal.colors.map(c => `
+                <div class="flex flex-col items-center gap-1" title="${c.name}">
+                  <span class="w-8 h-8 rounded-full border border-white/30 shadow-sm" style="background:${c.hex}"></span>
+                  <span class="text-[9px] text-[#b9a5c6] text-muted-adaptive">${c.name.split(' ')[0]}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectPersonalPalette(palId) {
+      activePaletteId = palId;
+      const palObj = seasonalPalettes.find(p => p.id === palId);
+      if (palObj) {
+        const pill = document.getElementById('active-palette-pill');
+        if (pill) pill.textContent = palObj.name;
+        const filterLabel = document.getElementById('label-filter-palette');
+        if (filterLabel) filterLabel.textContent = `Filtrar pela minha Paleta (${palObj.name})`;
+        showToast(`Sua paleta ativa agora é: ${palObj.name} ✦`);
+      }
+      renderPalettesSection();
+    }
+
+    function runStyleQuiz() {
+      const chosenPalette = document.getElementById('quiz-q1').value;
+      const styleName = document.getElementById('quiz-q3').value;
+      selectPersonalPalette(chosenPalette);
+      const palObj = seasonalPalettes.find(p => p.id === chosenPalette);
+
+      const banner = document.getElementById('quiz-result-banner');
+      banner.classList.remove('hidden');
+      banner.innerHTML = `
+        <p class="text-xs text-[#dfc9ee] font-semibold">✦ Resultado da sua Análise Kloset:</p>
+        <p class="text-sm font-serif text-white">Paleta Ideal: <strong>${palObj.name}</strong> • Estilo: <strong>${styleName}</strong></p>
+        <p class="text-[11px] text-[#cbbad7]">${palObj.desc}</p>
+        <button onclick="filterStoreByActivePalette()" class="mt-2 bg-[#b79ac8] text-[#1c1123] font-semibold text-xs px-4 py-1.5 rounded-full">
+          Explorar Peças da Minha Cartela →
+        </button>
+      `;
+    }
+
+    function filterStoreByActivePalette() {
+      filterOnlyActivePalette = true;
+      navigateTo('loja');
+    }
+
+    // ---------------------------------------------------------------------
+    // 9. LOOKS & IA (AI OUTFIT GENERATOR)
+    // ---------------------------------------------------------------------
+    function generateCompleteAILook() {
+      const container = document.getElementById('ai-generated-outfit-container');
+      if (!container) return;
+
+      const occasion = document.getElementById('ai-builder-occasion')?.value || 'noite';
+      const weather = document.getElementById('ai-builder-weather')?.value || 'ameno';
+      const palObj = seasonalPalettes.find(p => p.id === activePaletteId) || seasonalPalettes[0];
+
+      // Pick 3 coordinated pieces based on occasion
+      let mainPiece = catalogProducts[0]; // Top Vinho
+      let secondPiece = catalogProducts[5]; // Jaqueta Couro
+      let accPiece = catalogProducts[7]; // Bolsa Monograma
+
+      if (occasion === 'casual') {
+        mainPiece = catalogProducts[2];
+        secondPiece = catalogProducts[9];
+        accPiece = catalogProducts[7];
+      } else if (occasion === 'trabalho') {
+        mainPiece = catalogProducts[3];
+        secondPiece = catalogProducts[8];
+        accPiece = catalogProducts[7];
+      } else if (occasion === 'encontro') {
+        mainPiece = catalogProducts[4];
+        secondPiece = catalogProducts[8];
+        accPiece = catalogProducts[9];
+      }
+
+      const total = mainPiece.price + secondPiece.price + accPiece.price;
+
+      container.innerHTML = `
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-4">
+          <div>
+            <span class="text-[10px] tracking-[0.2em] uppercase text-[#cbb0dc] font-semibold">SUGESTÃO GERADA PELA IA KLOSET</span>
+            <h3 class="heading-adaptive font-serif text-2xl sm:text-3xl text-white mt-0.5">Look Harmonia ${palObj.name}</h3>
+          </div>
+          <span class="text-xs bg-[#b79ac8]/20 border border-[#b79ac8]/40 text-[#dfc9ee] px-3.5 py-1 rounded-full">
+            Compatibilidade 98% com seu perfil
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 my-5">
+          ${[mainPiece, secondPiece, accPiece].map((item, idx) => `
+            <div class="bg-[#170f1c] border border-white/10 rounded-2xl p-3 flex flex-col justify-between">
+              <img src="${item.image}" alt="${item.title}" class="w-full h-44 object-cover object-top rounded-xl" style="filter:${item.filterStyle}" />
+              <div class="mt-3">
+                <span class="text-[9.5px] uppercase tracking-wider text-[#b89bc8]">Peça 0${idx + 1} • ${item.category}</span>
+                <h4 class="font-serif text-lg text-white leading-tight mt-0.5">${item.title}</h4>
+                <p class="text-xs font-semibold text-[#dfc9ee] mt-1">R$ ${item.price.toFixed(2).replace('.', ',')}</p>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-xs text-[#cbbad7] space-y-1">
+            <p class="text-white font-semibold">✦ Nota da Consultora IA:</p>
+            <p>A combinação equilibra texturas estruturadas com a profundidade da cartela <strong>${palObj.name}</strong>, garantindo conforto térmico para clima ${weather === 'frio' ? 'frio (15°C)' : weather === 'quente' ? 'quente (28°C)' : 'ameno (22°C)'}.</p>
+          </div>
+          <div class="flex flex-col items-end shrink-0">
+            <span class="text-[11px] text-[#cbbad7]">Total do Look Completo:</span>
+            <strong class="font-serif text-2xl text-white">R$ ${total.toFixed(2).replace('.', ',')}</strong>
+            <button onclick="buyCompleteLook([${mainPiece.id}, ${secondPiece.id}, ${accPiece.id}])" class="mt-2 bg-[#b79ac8] hover:bg-[#c8aed8] text-[#1c1123] font-semibold text-xs px-6 py-2.5 rounded-full shadow-md transition">
+              Adicionar Look Completo à Sacola →
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function buyCompleteLook(ids) {
+      ids.forEach(id => addToCart(id, true));
+      toggleCartDrawer(true);
+      showToast('Look completo adicionado à sua sacola ✦');
+    }
+
+    // ---------------------------------------------------------------------
+    // 10. CLIMA (WEATHER OUTFIT RECOMMENDER)
+    // ---------------------------------------------------------------------
+    const weatherCities = {
+      maringa: {
+        name: "Maringá - PR",
+        temp: "22°C",
+        cond: "Nublado",
+        humidity: "68%",
+        wind: "14 km/h",
+        lookName: "Casual Chic Meia-Estação",
+        tip: "O clima nublado de 22°C em Maringá pede peças versáteis de meia-estação: combine um top estruturado com calça de alfaiataria e leve uma terceira peça leve para o final da tarde.",
+        items: [1, 3, 7]
+      },
+      curitiba: {
+        name: "Curitiba - PR",
+        temp: "15°C",
+        cond: "Frio & Neblina",
+        humidity: "82%",
+        wind: "19 km/h",
+        lookName: "Elegância Urbana de Inverno",
+        tip: "Com 15°C em Curitiba, aposte em sobreposições estruturadas como a Jaqueta Biker em couro, calça de alfaiataria escura e scarpin fechado.",
+        items: [5, 3, 8]
+      },
+      saopaulo: {
+        name: "São Paulo - SP",
+        temp: "24°C",
+        cond: "Parcialmente Nublado",
+        humidity: "60%",
+        wind: "12 km/h",
+        lookName: "Alfaiataria Contemporânea",
+        tip: "Para a rotina dinâmica de São Paulo a 24°C, conjuntos monocromáticos garantem elegância do trabalho ao jantar sem esforço.",
+        items: [3, 7, 9]
+      },
+      rio: {
+        name: "Rio de Janeiro - RJ",
+        temp: "29°C",
+        cond: "Ensolarado",
+        humidity: "55%",
+        wind: "21 km/h",
+        lookName: "Leveza Editorial Solar",
+        tip: "Em dias ensolarados de 29°C, priorize modelagens frescas nos ombros, óculos de sol com proteção UV e bolsas práticas.",
+        items: [0, 6, 9]
+      }
+    };
+    let currentWeatherCityKey = 'maringa';
+
+    function selectWeatherCity(cityKey) {
+      currentWeatherCityKey = cityKey;
+      const data = weatherCities[cityKey];
+
+      // Update Home widget labels too
+      const homeCity = document.getElementById('home-weather-city');
+      const homeTemp = document.getElementById('home-weather-temp');
+      const homeCond = document.getElementById('home-weather-cond');
+      const homeLook = document.getElementById('home-weather-look');
+      if (homeCity) homeCity.textContent = `Hoje em ${data.name}`;
+      if (homeTemp) homeTemp.textContent = data.temp;
+      if (homeCond) homeCond.textContent = data.cond;
+      if (homeLook) homeLook.textContent = data.lookName;
+
+      // Update city buttons
+      document.querySelectorAll('.city-pill').forEach(btn => {
+        btn.className = 'city-pill bg-white/10 text-white hover:bg-white/20 text-xs px-4 py-2 rounded-full transition';
+      });
+      const activeBtn = document.getElementById(`city-btn-${cityKey}`);
+      if (activeBtn) {
+        activeBtn.className = 'city-pill bg-[#b79ac8] text-[#1c1123] font-semibold text-xs px-4 py-2 rounded-full transition';
+      }
+
+      const container = document.getElementById('weather-page-content');
+      if (!container) return;
+
+      const lookProducts = data.items.map(idx => catalogProducts[idx] || catalogProducts[0]);
+
+      container.innerHTML = `
+        <div class="lg:col-span-4 surface-card bg-[#221329] border border-[#b89bc8]/35 rounded-[22px] p-6 flex flex-col justify-between text-white">
+          <div>
+            <span class="text-[10px] tracking-[0.2em] uppercase text-[#cbb0dc]">AGORA EM ${data.name.toUpperCase()}</span>
+            <div class="flex items-center gap-4 mt-4">
+              <svg class="w-14 h-14 text-[#dfc9ee]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+              </svg>
+              <div>
+                <span class="font-serif text-5xl text-white">${data.temp}</span>
+                <p class="text-xs text-[#cbb8d8] mt-0.5">${data.cond}</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 my-6 p-3.5 rounded-2xl bg-white/5 border border-white/10 text-xs">
+              <div>
+                <span class="text-[#b6a2c4] block">Umidade do Ar</span>
+                <strong class="text-white">${data.humidity}</strong>
+              </div>
+              <div>
+                <span class="text-[#b6a2c4] block">Vento</span>
+                <strong class="text-white">${data.wind}</strong>
+              </div>
+            </div>
+
+            <p class="text-xs text-[#d8c6e4] leading-relaxed">${data.tip}</p>
+          </div>
+
+          <button onclick="buyCompleteLook([${lookProducts.map(p => p.id).join(',')}])" class="w-full mt-6 bg-[#b79ac8] hover:bg-[#c8aed8] text-[#1c1123] font-semibold text-xs py-3 rounded-full transition">
+            Comprar Look do Clima (${data.temp}) →
+          </button>
+        </div>
+
+        <div class="lg:col-span-8 space-y-4">
+          <h3 class="heading-adaptive font-serif text-2xl text-white">Peças Recomendadas para Hoje: <span class="italic text-[#dfc9ee]">${data.lookName}</span></h3>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            ${lookProducts.map(p => `
+              <div class="surface-card bg-[#211528] border border-[#b89bc8]/25 rounded-2xl overflow-hidden flex flex-col justify-between">
+                <img src="${p.image}" alt="${p.title}" class="w-full h-56 object-cover object-top" style="filter:${p.filterStyle}" />
+                <div class="p-4 space-y-2">
+                  <span class="text-[10px] uppercase text-[#b89bc8]">${p.category}</span>
+                  <h4 class="heading-adaptive font-serif text-lg text-white leading-tight">${p.title}</h4>
+                  <p class="text-xs font-semibold text-[#dfc9ee]">R$ ${p.price.toFixed(2).replace('.', ',')}</p>
+                  <button onclick="addToCart(${p.id})" class="w-full bg-white/10 hover:bg-[#b79ac8] hover:text-[#1c1123] text-white text-xs py-2 rounded-full transition">
+                    + Adicionar à Sacola
+                  </button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ---------------------------------------------------------------------
+    // 11. FAVORITOS & SHOPPING BAG DRAWER
+    // ---------------------------------------------------------------------
+    function toggleFavorite(prodId) {
+      const p = catalogProducts.find(item => item.id === prodId);
+      if (!p) return;
+      p.liked = !p.liked;
+      updateBadges();
+      renderHomeTrendingLooks();
+      if (activePage === 'loja') renderStoreCatalog();
+      if (activePage === 'favoritos') renderFavoritesPage();
+      showToast(p.liked ? 'Salvo nos seus Favoritos ♥' : 'Removido dos Favoritos');
+    }
+
+    function renderFavoritesPage() {
+      const grid = document.getElementById('favorites-grid');
+      if (!grid) return;
+      const favs = catalogProducts.filter(p => p.liked);
+
+      if (favs.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-12 text-center space-y-3">
+            <p class="font-serif text-2xl text-[#dfc9ee]">Você ainda não possui itens nos Favoritos.</p>
+            <button onclick="navigateTo('loja')" class="bg-[#b79ac8] text-[#1c1123] text-xs font-semibold px-6 py-2.5 rounded-full">
+              Explorar Loja →
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = favs.map(prod => `
+        <div class="surface-card bg-[#211528] border border-[#b89bc8]/30 rounded-[20px] overflow-hidden flex flex-col justify-between">
+          <div class="relative aspect-[3/3.6]">
+            <img src="${prod.image}" class="w-full h-full object-cover object-top" style="filter:${prod.filterStyle}" />
+            <button onclick="toggleFavorite(${prod.id})" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-[#e3c8d8] text-[#4a2038] flex items-center justify-center">♥</button>
+          </div>
+          <div class="p-4 space-y-2">
+            <h3 class="heading-adaptive font-serif text-xl text-white">${prod.title}</h3>
+            <p class="text-sm font-semibold text-[#dfc9ee]">R$ ${prod.price.toFixed(2).replace('.', ',')}</p>
+            <button onclick="addToCart(${prod.id})" class="w-full bg-[#b79ac8] text-[#1c1123] font-semibold text-xs py-2 rounded-full">
+              Mover para a Sacola →
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addToCart(prodId, silent = false) {
+      const existing = shoppingCart.find(i => i.productId === prodId);
+      if (existing) existing.qty += 1;
+      else shoppingCart.push({ productId: prodId, qty: 1 });
+
+      updateBadges();
+      renderCartDrawer();
+      if (!silent) {
+        showToast('Peça adicionada à sua Sacola Kloset ✦');
+      }
+    }
+
+    function changeCartQty(prodId, delta) {
+      const item = shoppingCart.find(i => i.productId === prodId);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        shoppingCart = shoppingCart.filter(i => i.productId !== prodId);
+      }
+      updateBadges();
+      renderCartDrawer();
+    }
+
+    function toggleCartDrawer(open) {
+      const drawer = document.getElementById('cart-drawer');
+      const backdrop = document.getElementById('cart-drawer-backdrop');
+      if (open) {
+        renderCartDrawer();
+        backdrop.classList.remove('hidden');
+        drawer.classList.remove('translate-x-full');
+      } else {
+        backdrop.classList.add('hidden');
+        drawer.classList.add('translate-x-full');
+      }
+    }
+
+    function renderCartDrawer() {
+      const container = document.getElementById('cart-items-container');
+      const subtotalEl = document.getElementById('cart-subtotal');
+      if (!container) return;
+
+      if (shoppingCart.length === 0) {
+        container.innerHTML = `<p class="text-center text-xs text-[#b9a5c6] py-12">Sua sacola está vazia no momento.</p>`;
+        subtotalEl.textContent = 'R$ 0,00';
+        return;
+      }
+
+      let total = 0;
+      container.innerHTML = shoppingCart.map(entry => {
+        const p = catalogProducts.find(prod => prod.id === entry.productId);
+        if (!p) return '';
+        total += p.price * entry.qty;
+        return `
+          <div class="flex items-center gap-3.5 bg-white/5 border border-white/10 p-3 rounded-2xl">
+            <img src="${p.image}" class="w-16 h-20 object-cover rounded-xl shrink-0" style="filter:${p.filterStyle}" />
+            <div class="flex-1 min-w-0">
+              <h4 class="font-serif text-base text-white truncate">${p.title}</h4>
+              <span class="text-xs text-[#dfc9ee] font-semibold">R$ ${p.price.toFixed(2).replace('.', ',')}</span>
+              <div class="flex items-center gap-2.5 mt-2">
+                <button onclick="changeCartQty(${p.id}, -1)" class="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-xs flex items-center justify-center">-</button>
+                <span class="text-xs font-semibold">${entry.qty}</span>
+                <button onclick="changeCartQty(${p.id}, 1)" class="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-xs flex items-center justify-center">+</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      subtotalEl.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    }
+
+    function checkoutCart() {
+      if (shoppingCart.length === 0) return;
+      shoppingCart = [];
+      updateBadges();
+      renderCartDrawer();
+      toggleCartDrawer(false);
+      showToast('Pedido realizado com sucesso! Obrigada por escolher a Kloset Styles ✦');
+    }
+
+    function updateBadges() {
+      const cartCount = shoppingCart.reduce((acc, i) => acc + i.qty, 0);
+      const favCount = catalogProducts.filter(p => p.liked).length;
+      document.getElementById('cart-badge').textContent = cartCount;
+      document.getElementById('fav-badge').textContent = favCount;
+    }
+
+    // ---------------------------------------------------------------------
+    // 12. MODALS & GITHUB DOWNLOAD HELPER
+    // ---------------------------------------------------------------------
+    function openInfoModal(type) {
+      const backdrop = document.getElementById('info-modal-backdrop');
+      const body = document.getElementById('info-modal-body');
+      backdrop.classList.remove('hidden');
+      backdrop.classList.add('flex');
+
+      if (type === 'sobre') {
+        body.innerHTML = `
+          <span class="text-[10px] tracking-[0.2em] uppercase text-[#b89bc8] font-semibold">SOBRE NÓS</span>
+          <h3 class="font-serif text-3xl text-white mt-1">Kloset Styles</h3>
+          <p class="text-xs text-[#cbbad7] mt-3 leading-relaxed">
+            A Kloset Styles nasceu para unir moda editorial, inteligência artificial e autoconhecimento através da coloração pessoal. Organize seu guarda-roupa digital, consulte o clima da sua cidade e vista sua melhor versão todos os dias.
+          </p>
+        `;
+      } else if (type === 'ajuda') {
+        body.innerHTML = `
+          <span class="text-[10px] tracking-[0.2em] uppercase text-[#b89bc8] font-semibold">CENTRAL DE AJUDA</span>
+          <h3 class="font-serif text-3xl text-white mt-1">Dúvidas Frequentes</h3>
+          <ul class="text-xs text-[#cbbad7] mt-3 space-y-2.5">
+            <li><strong>• Frete Grátis:</strong> Disponível para todas as regiões do Brasil.</li>
+            <li><strong>• Troca Fácil:</strong> Até 30 dias após o recebimento sem custo.</li>
+            <li><strong>• Paleta Pessoal:</strong> Faça o quiz na aba "Paleta Pessoal" para descobrir sua cartela.</li>
+          </ul>
+        `;
+      } else {
+        body.innerHTML = `
+          <span class="text-[10px] tracking-[0.2em] uppercase text-[#b89bc8] font-semibold">ATENDIMENTO KLOSET</span>
+          <h3 class="font-serif text-3xl text-white mt-1">Fale Conosco</h3>
+          <p class="text-xs text-[#cbbad7] mt-3">E-mail: contato@klosetstyles.com.br • Instagram: @klosetstyles</p>
+        `;
+      }
+    }
+
+    function openGitHubModal() {
+      const backdrop = document.getElementById('info-modal-backdrop');
+      const body = document.getElementById('info-modal-body');
+      backdrop.classList.remove('hidden');
+      backdrop.classList.add('flex');
+
+      body.innerHTML = `
+        <span class="text-[10px] tracking-[0.2em] uppercase text-[#b89bc8] font-semibold">PRONTO PARA O SEU GITHUB</span>
+        <h3 class="font-serif text-3xl text-white mt-1">Como colocar no seu repositório</h3>
+        <p class="text-xs text-[#cbbad7] mt-2 leading-relaxed">
+          Todo o site (com todas as 7 páginas, Loja, Closet Digital, Paleta Pessoal, IA, Clima e os dois temas das suas imagens) está consolidado neste arquivo <code>index.html</code>:
+        </p>
+        <ol class="text-xs text-[#e2d4ec] space-y-2 mt-4 list-decimal pl-4">
+          <li>Clique no botão abaixo para baixar o arquivo <code>index.html</code>.</li>
+          <li>Acesse seu repositório <strong>github.com/qeloize-elyot/kloset-styles</strong>.</li>
+          <li>Clique em <strong>Add file → Upload files</strong> (ou edite o <code>index.html</code> atual) e envie o arquivo.</li>
+          <li>Pronto! Seu GitHub Pages exibirá o site completo imediatamente.</li>
+        </ol>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <button onclick="downloadIndexHtmlFile()" class="flex-1 bg-[#b79ac8] hover:bg-[#c8aed8] text-[#1c1123] font-semibold text-xs py-3 px-4 rounded-full transition">
+            ⬇ Baixar index.html Completo
+          </button>
+          <button onclick="closeInfoModal()" class="bg-white/10 hover:bg-white/20 text-white text-xs py-3 px-5 rounded-full">
+            Fechar
+          </button>
+        </div>
+      `;
+    }
+
+    function closeInfoModal() {
+      const backdrop = document.getElementById('info-modal-backdrop');
+      backdrop.classList.add('hidden');
+      backdrop.classList.remove('flex');
+    }
+
+    function downloadIndexHtmlFile() {
+      const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'index.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Arquivo index.html baixado! Pronto para enviar ao seu GitHub ✦');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast-msg');
+      const text = document.getElementById('toast-text');
+      text.textContent = msg;
+      toast.classList.remove('opacity-0');
+      toast.classList.add('opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0');
+      }, 2800);
+    }
+
+    // Initialize everything on load
+    window.addEventListener('DOMContentLoaded', () => {
+      updateBadges();
+      renderHomeTrendingLooks();
+      renderStoreCatalog();
+      renderClosetItems();
+      renderPalettesSection();
+    });
+  </script>
+</body>
+</html>
