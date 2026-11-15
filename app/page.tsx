@@ -1,9 +1,12 @@
-import { permanentRedirect } from "next/navigation";
-
 /**
- * Redireciona a home para a rota que devolve o HTML
- * com Content-Type correto (página renderizada, não código).
+ * Fallback da home.
+ * O middleware reescreve "/" para /api/full-site,
+ * que devolve o HTML com Content-Type correto.
  */
 export default function HomePage() {
-  permanentRedirect("/api/full-site");
+  return (
+    <main style={{ fontFamily: "system-ui", padding: 40 }}>
+      <p>Carregando Kloset Styles…</p>
+    </main>
+  );
 }
