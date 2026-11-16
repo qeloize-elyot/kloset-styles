@@ -274,7 +274,7 @@ export async function GET() {
       }
 
       var conf = data.confianca != null ? data.confianca : 80;
-      toast('Gemini: Subtom ' soft + userSubtom + ' • Biotipo ' + userBiotipo + ' (' + conf + '%).');
+      toast('Gemini: Subtom ' + userSubtom + ' • Biotipo ' + userBiotipo + ' (' + conf + '%).');
       return data;
     } catch (err) {
       toast('Falha ao chamar a API do Gemini. Tente de novo.');
@@ -353,9 +353,6 @@ export async function GET() {
     var occasion = (document.getElementById('ai-builder-occasion') || {}).value || 'Faculdade / Dia a Dia';
     var weather = (document.getElementById('ai-builder-weather') || {}).value || 'ameno';
     var styleChosen = (document.getElementById('ai-builder-style') || {}).value || (typeof userStylePref !== 'undefined' ? userStylePref : 'Casual Chic');
-    var palObj = (typeof seasonalPalettes !== 'undefined')
-      ? (seasonalPalettes.find(function (p) { return p.id === activePaletteId; }) || seasonalPalettes[0])
-      : { name: 'Sua paleta' };
 
     var sideSummary = document.getElementById('ai-side-profile-summary');
     var sideClosetCount = document.getElementById('ai-side-closet-count');
@@ -449,7 +446,7 @@ export async function GET() {
         chosenClosetPieces.map(function (entry) {
           return '<div class="bg-[#170f1c] border border-[#b89bc8]/30 rounded-2xl p-3 flex flex-col justify-between">' +
             '<div class="relative">' +
-              '<img src="' + (entry.piece.image || '') + '" alt="' + (entry.piece.name || '') + '" class="w-full h-48 object-cover object-top rounded-xl" />' +
+              '<img src="' + (entry.piece.image || '') + '" alt="' + (entry.piece.name || '') + '" class="w-full h-full object-cover object-top rounded-xl h-48" />' +
               '<span class="absolute top-2.5 left-2.5 bg-[#1c1123]/90 border border-[#b89bc8]/40 text-[#dfc9ee] text-[9.5px] font-semibold px-2.5 py-0.5 rounded-full">' + entry.role + '</span>' +
             '</div>' +
             '<div class="mt-3">' +
@@ -498,9 +495,6 @@ export async function GET() {
 })();
 </script>`;
 
-  // Fix accidental typo if any slipped - rebuild without typo
-  // (see soft typo guard below)
-
   if (html.includes("</head>")) {
     html = html.replace("</head>", `${headInject}</head>`);
   } else {
@@ -512,10 +506,6 @@ export async function GET() {
   } else {
     html = html + appOverride;
   }
-
-  // Safety: fix a possible typo introduced in toast string
-  html = html.replace("userSubtom ' soft +", "userSubtom + ");
-  html = html.replace("' soft + userSubtom", "' + userSubtom");
 
   return new NextResponse(html, {
     status: 200,
