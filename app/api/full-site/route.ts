@@ -5,7 +5,8 @@ import path from "path";
 /**
  * Serve o index.html injetando:
  * 1) Credenciais públicas do Supabase
- * 2) Overrides de login/cadastro para usar Auth de verdade (sem fake localStorage)
+ * 2) Auth real (login/cadastro)
+ * 3) Análise de subtom via API Gemini (/api/analise-subtom)
  */
 export async function GET() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
@@ -48,8 +49,7 @@ export async function GET() {
     supabaseAnonKey
   )};</script>`;
 
-  // Sobrescreve funções de auth do index.html (que antes aceitavam qualquer login)
-  const authOverride = `
+  const appOverride = `
 <script>
 (function () {
   function toast(msg) {
@@ -71,6 +71,7 @@ export async function GET() {
     return null;
   }
 
+  // ---------- AUTH REAL ----------
   window.handleAuthLogin = async function (e) {
     e.preventDefault();
     var email = (document.getElementById('login-email') || {}).value || '';
@@ -202,7 +203,6 @@ export async function GET() {
     }
   };
 
-  var _origLogout = typeof logoutUser === 'function' ? logoutUser : null;
   window.logoutUser = function () {
     currentUser = null;
     localStorage.removeItem('kloset_auth_user');
@@ -210,6 +210,116 @@ export async function GET() {
     if (client) client.auth.signOut().catch(function () {});
     if (typeof renderAuthView === 'function') renderAuthView();
     toast('Você saiu da sua conta.');
+  };
+
+  // ---------- GEMINI: análise real de subtom ----------
+  window.__klosetLastSelfieDataUrl = null;
+
+  async function analisarComGemini(dataUrl) {
+    if (!dataUrl || dataUrl.indexOf('base64,') < 0) {
+      toast('Envie ou tire uma selfie primeiro.');
+      return null;
+    }
+
+    toast('Analisando com Google Gemini…');
+
+    var mime = 'image/jpeg';
+    if (dataUrl.indexOf('image/png') >= 0) mime = 'image/png';
+    else if (dataUrl.indexOf('image/webp') >= 0) mime = 'image/webp';
+
+    var genero = (typeof currentGender !== 'undefined' ? currentGender : 'feminino');
+
+    try {
+      var resp = await fetch('/api/analise-subtom', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          imageBase64: dataUrl,
+          mimeType: mime,
+          genero: genero
+        })
+      });
+
+      var data = await resp.json();
+      if (!resp.ok || data.error) {
+        toast(data.error || ('Erro na análise (' + resp.status + ')'));
+        return null;
+      }
+
+      if (typeof userSubtom !== 'undefined') userSubtom = data.subtom || userSubtom;
+      if (typeof userBiotipo !== 'undefined') userBiotipo = data.biotipo || userBiotipo;
+      if (typeof activePaletteId !== 'undefined') activePaletteId = data.paleta_id || activePaletteId;
+
+      if (typeof saveProfilePreferences === 'function') saveProfilePreferences();
+      if (typeof populateBiotypeSelect === 'function') populateBiotypeSelect();
+      if (typeof selectPersonalPalette === 'function') {
+        selectPersonalPalette(activePaletteId, true);
+      }
+
+      var conf = data.confianca != null ? data.confianca : 80;
+      toast('Gemini: Subtom ' + userSubtom + ' • Biotipo ' + userBiotipo + ' (' + conf + '%).');
+      return data;
+    } catch (err) {
+      toast('Falha ao chamar a API do Gemini. Tente de novo.');
+      return null;
+    }
+  }
+
+  window.handlePalettePhotoUpload = function (event) {
+    var file = event.target && event.target.files && event.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      var dataUrl = e.target.result;
+      window.__klosetLastSelfieDataUrl = dataUrl;
+      var prevBox = document.getElementById('palette-photo-preview-box');
+      var prevImg = document.getElementById('palette-photo-preview-img');
+      if (prevBox && prevImg) {
+        prevImg.src = dataUrl;
+        prevBox.classList.remove('hidden');
+      }
+      toast('Foto pronta. Clique em "Descobrir Automaticamente com IA".');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  window.capturePalettePhotoAndAnalyze = async function () {
+    var video = document.getElementById('palette-camera-video');
+    if (video) {
+      var canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 512;
+      var ctx = canvas.getContext('2d');
+      if (ctx) ctx.drawImage(video, 0, 0, 512, 512);
+      var dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+      window.__klosetLastSelfieDataUrl = dataUrl;
+      var prevBox = document.getElementById('palette-photo-preview-box');
+      var prevImg = document.getElementById('palette-photo-preview-img');
+      if (prevBox && prevImg) {
+        prevImg.src = dataUrl;
+        prevBox.classList.remove('hidden');
+      }
+    }
+    if (typeof stopPaletteAICamera === 'function') stopPaletteAICamera();
+    await window.runAutomaticAIDiagnosis();
+  };
+
+  window.runAutomaticAIDiagnosis = async function () {
+    var dataUrl = window.__klosetLastSelfieDataUrl;
+    if (!dataUrl) {
+      var prevImg = document.getElementById('palette-photo-preview-img');
+      if (prevImg && prevImg.src && prevImg.src.indexOf('base64,') >= 0) {
+        dataUrl = prevImg.src;
+        window.__klosetLastSelfieDataUrl = dataUrl;
+      }
+    }
+
+    if (!dataUrl) {
+      toast('Tire ou envie uma selfie antes de analisar com a IA.');
+      return;
+    }
+
+    await analisarComGemini(dataUrl);
   };
 })();
 </script>`;
@@ -221,9 +331,9 @@ export async function GET() {
   }
 
   if (html.includes("</body>")) {
-    html = html.replace("</body>", `${authOverride}</body>`);
+    html = html.replace("</body>", `${appOverride}</body>`);
   } else {
-    html = html + authOverride;
+    html = html + appOverride;
   }
 
   return new NextResponse(html, {
