@@ -4,6 +4,14 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
+// Modelos atuais da API generativelanguage (v1beta)
+const GEMINI_MODELS = [
+  "gemini-2.0-flash",
+  "gemini-2.0-flash-001",
+  "gemini-flash-latest",
+  "gemini-2.5-flash",
+] as const;
+
 type AnaliseBody = {
   imageBase64?: string;
   mimeType?: string;
@@ -41,7 +49,6 @@ function normalizePalette(subtom: string, contraste?: string): string {
   if (s.includes("neutro")) {
     return "verao_suave";
   }
-  // frio
   return c.includes("baixo") || c.includes("suave")
     ? "verao_suave"
     : "inverno_profundo";
@@ -69,7 +76,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Aceita data URL completa
     if (imageBase64.startsWith("data:")) {
       const parts = imageBase64.split(",");
       imageBase64 = parts[1] || "";
@@ -83,13 +89,6 @@ export async function POST(request: Request) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
-      generationConfig: {
-        temperature: 0.3,
-        maxOutputTokens: 1024,
-      },
-    });
 
     const prompt = `Você é uma consultora de coloração pessoal e morfologia corporal (Brasil).
 Analise a selfie e responda APENAS um JSON válido (sem markdown), com este formato exato:
@@ -116,20 +115,53 @@ Regras:
 
 Responda só o JSON.`;
 
-    const result = await model.generateContent([
-      { text: prompt },
-      {
-        inlineData: {
-          mimeType:
-            mimeType === "image/png" || mimeType === "image/webp"
-              ? mimeType
-              : "image/jpeg",
-          data: imageBase64,
-        },
+    const imagePart = {
+      inlineData: {
+        mimeType:
+          mimeType === "image/png" || mimeType === "image/webp"
+            ? mimeType
+            : "image/jpeg",
+        data: imageBase64,
       },
-    ]);
+    };
 
-    const text = result.response.text();
+    let text = "";
+    let usedModel = GEMINI_MODELS[0];
+    let lastError: Error | null = null;
+
+    for (const modelName of GEMINI_MODELS) {
+      try {
+        const model = genAI.getGenerativeModel({
+          model: modelName,
+          generationConfig: {
+            temperature: 0.3,
+            maxOutputTokens: 1024,
+          },
+        });
+        const result = await model.generateContent([{ text: prompt }, imagePart]);
+        text = result.response.text();
+        usedModel = modelName;
+        lastError = null;
+        break;
+      } catch (err) {
+        lastError = err instanceof Error ? err : new Error(String(err));
+        const msg = lastError.message || "";
+        // tenta próximo modelo se for 404 / not found
+        if (
+          msg.includes("not found") ||
+          msg.includes("404") ||
+          msg.includes("is not supported")
+        ) {
+          continue;
+        }
+        throw lastError;
+      }
+    }
+
+    if (lastError && !text) {
+      throw lastError;
+    }
+
     const parsed = extractJson(text);
 
     if (!parsed) {
@@ -137,18 +169,18 @@ Responda só o JSON.`;
         {
           error: "A IA não retornou um JSON válido. Tente outra foto.",
           raw: text.slice(0, 500),
+          model: usedModel,
         },
         { status: 502 }
       );
     }
 
     const subtomRaw = String(parsed.subtom || "Frio");
-    const subtom =
-      subtomRaw.toLowerCase().includes("quente")
-        ? "Quente"
-        : subtomRaw.toLowerCase().includes("neutro")
-          ? "Neutro"
-          : "Frio";
+    const subtom = subtomRaw.toLowerCase().includes("quente")
+      ? "Quente"
+      : subtomRaw.toLowerCase().includes("neutro")
+        ? "Neutro"
+        : "Frio";
 
     const contraste = String(parsed.contraste || "medio");
     const biotipo = String(
@@ -177,7 +209,7 @@ Responda só o JSON.`;
     return NextResponse.json({
       ok: true,
       provider: "google-gemini",
-      model: "gemini-1.5-flash",
+      model: usedModel,
       subtom,
       contraste,
       biotipo,
@@ -190,9 +222,6 @@ Responda só o JSON.`;
   } catch (err) {
     const message =
       err instanceof Error ? err.message : "Erro desconhecido na análise.";
-    return NextResponse.json(
-      { error: message, ok: false },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: message, ok: false }, { status: 500 });
   }
 }
