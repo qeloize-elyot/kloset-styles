@@ -2,13 +2,16 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
-export const maxDuration = 30;
+export const maxDuration = 60;
 
+/** Ordem: modelos mais estáveis primeiro; evita aliases "latest" no início */
 const GEMINI_MODELS: string[] = [
   "gemini-2.0-flash",
   "gemini-2.0-flash-001",
-  "gemini-flash-latest",
   "gemini-2.5-flash",
+  "gemini-2.0-flash-lite",
+  "gemini-2.5-flash-lite",
+  "gemini-flash-latest",
 ];
 
 type AnaliseBody = {
@@ -16,6 +19,26 @@ type AnaliseBody = {
   mimeType?: string;
   genero?: string;
 };
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isRetryableModelError(msg: string): boolean {
+  const m = msg.toLowerCase();
+  return (
+    m.includes("not found") ||
+    m.includes("404") ||
+    m.includes("is not supported") ||
+    m.includes("503") ||
+    m.includes("429") ||
+    m.includes("high demand") ||
+    m.includes("resource exhausted") ||
+    m.includes("unavailable") ||
+    m.includes("overloaded") ||
+    m.includes("try again")
+  );
+}
 
 function extractJson(text: string): Record<string, unknown> | null {
   const cleaned = text
@@ -87,6 +110,17 @@ export async function POST(request: Request) {
       );
     }
 
+    // Limita tamanho (~4MB base64) para evitar timeout
+    if (imageBase64.length > 5_500_000) {
+      return NextResponse.json(
+        {
+          error:
+            "Foto muito grande. Envie uma imagem menor (até ~4 MB) e tente de novo.",
+        },
+        { status: 400 }
+      );
+    }
+
     const genAI = new GoogleGenerativeAI(apiKey);
 
     const prompt = `Você é uma consultora de coloração pessoal e morfologia corporal (Brasil).
@@ -125,41 +159,62 @@ Responda só o JSON.`;
     };
 
     let text = "";
-    let usedModel = "gemini-2.0-flash";
+    let usedModel = GEMINI_MODELS[0];
     let lastError: Error | null = null;
 
     for (const modelName of GEMINI_MODELS) {
-      try {
-        const model = genAI.getGenerativeModel({
-          model: modelName,
-          generationConfig: {
-            temperature: 0.3,
-            maxOutputTokens: 1024,
-          },
-        });
-        const result = await model.generateContent([
-          { text: prompt },
-          imagePart,
-        ]);
-        text = result.response.text();
-        usedModel = modelName;
-        lastError = null;
-        break;
-      } catch (err) {
-        lastError = err instanceof Error ? err : new Error(String(err));
-        const msg = lastError.message || "";
-        if (
-          msg.includes("not found") ||
-          msg.includes("404") ||
-          msg.includes("is not supported")
-        ) {
-          continue;
+      // até 2 tentativas por modelo (ajuda em 503 temporário)
+      for (let attempt = 1; attempt <= 2; attempt++) {
+        try {
+          const model = genAI.getGenerativeModel({
+            model: modelName,
+            generationConfig: {
+              temperature: 0.3,
+              maxOutputTokens: 1024,
+            },
+          });
+          const result = await model.generateContent([
+            { text: prompt },
+            imagePart,
+          ]);
+          text = result.response.text();
+          usedModel = modelName;
+          lastError = null;
+          break;
+        } catch (err) {
+          lastError = err instanceof Error ? err : new Error(String(err));
+          const msg = lastError.message || "";
+
+          if (isRetryableModelError(msg)) {
+            if (attempt < 2) {
+              await sleep(800 * attempt);
+              continue;
+            }
+            // tenta próximo modelo
+            break;
+          }
+
+          // erro não recuperável (ex.: chave inválida)
+          throw lastError;
         }
-        throw lastError;
       }
+
+      if (text) break;
     }
 
     if (lastError && !text) {
+      const msg = lastError.message || "";
+      if (isRetryableModelError(msg)) {
+        return NextResponse.json(
+          {
+            ok: false,
+            error:
+              "O Google Gemini está com muita demanda agora. Aguarde 30–60 segundos e tente de novo.",
+            detail: msg.slice(0, 280),
+          },
+          { status: 503 }
+        );
+      }
       throw lastError;
     }
 
@@ -223,6 +278,12 @@ Responda só o JSON.`;
   } catch (err) {
     const message =
       err instanceof Error ? err.message : "Erro desconhecido na análise.";
-    return NextResponse.json({ error: message, ok: false }, { status: 500 });
+    const friendly = isRetryableModelError(message)
+      ? "O Google Gemini está instável no momento. Aguarde um pouco e tente de novo."
+      : message;
+    return NextResponse.json(
+      { error: friendly, ok: false, detail: message.slice(0, 280) },
+      { status: 500 }
+    );
   }
 }
