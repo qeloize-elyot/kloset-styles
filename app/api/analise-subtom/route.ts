@@ -4,13 +4,12 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
-// Modelos atuais da API generativelanguage (v1beta)
-const GEMINI_MODELS = [
+const GEMINI_MODELS: string[] = [
   "gemini-2.0-flash",
   "gemini-2.0-flash-001",
   "gemini-flash-latest",
   "gemini-2.5-flash",
-] as const;
+];
 
 type AnaliseBody = {
   imageBase64?: string;
@@ -126,7 +125,7 @@ Responda só o JSON.`;
     };
 
     let text = "";
-    let usedModel = GEMINI_MODELS[0];
+    let usedModel = "gemini-2.0-flash";
     let lastError: Error | null = null;
 
     for (const modelName of GEMINI_MODELS) {
@@ -138,7 +137,10 @@ Responda só o JSON.`;
             maxOutputTokens: 1024,
           },
         });
-        const result = await model.generateContent([{ text: prompt }, imagePart]);
+        const result = await model.generateContent([
+          { text: prompt },
+          imagePart,
+        ]);
         text = result.response.text();
         usedModel = modelName;
         lastError = null;
@@ -146,7 +148,6 @@ Responda só o JSON.`;
       } catch (err) {
         lastError = err instanceof Error ? err : new Error(String(err));
         const msg = lastError.message || "";
-        // tenta próximo modelo se for 404 / not found
         if (
           msg.includes("not found") ||
           msg.includes("404") ||
