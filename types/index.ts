@@ -38,6 +38,18 @@ export type Clima =
   | "frio"
   | "chuva";
 
+/** Linha da tabela public.pecas_closet (schema do SQL do Supabase) */
+export interface PecaCloset {
+  id: number;
+  user_id: string;
+  nome: string;
+  categoria: string;
+  cor: string;
+  imagem: string | null;
+  tags: string[] | null;
+  criado_em: string;
+}
+
 export interface AnaliseCores {
   id: string;
   user_id: string;
@@ -49,20 +61,6 @@ export interface AnaliseCores {
   observacoes?: string;
   imagem_url?: string;
   created_at: string;
-}
-
-export interface Peca {
-  id: string;
-  user_id: string;
-  nome: string;
-  categoria: CategoriaPeca;
-  cor_principal: string;
-  cores_secundarias?: string[];
-  estilo?: string;
-  imagem_url?: string;
-  observacoes?: string;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface Look {
@@ -80,7 +78,29 @@ export interface PerfilUsuario {
   id: string;
   nome: string;
   email: string;
+  genero?: string;
+  cidade?: string;
+  estilo?: string;
+  subtom?: string;
+  biotipo?: string;
+  paleta_id?: string;
   avatar_url?: string;
-  analise_id?: string;
-  created_at: string;
+  criado_em?: string;
 }
+
+export const CATEGORIAS_PECA: { value: CategoriaPeca; label: string }[] = [
+  { value: "camiseta", label: "Camiseta" },
+  { value: "camisa", label: "Camisa" },
+  { value: "blusa", label: "Blusa" },
+  { value: "calca", label: "Calça" },
+  { value: "shorts", label: "Shorts" },
+  { value: "saia", label: "Saia" },
+  { value: "vestido", label: "Vestido" },
+  { value: "jaqueta", label: "Jaqueta" },
+  { value: "casaco", label: "Casaco" },
+  { value: "tenis", label: "Tênis" },
+  { value: "sapato", label: "Sapato" },
+  { value: "sandalia", label: "Sandália" },
+  { value: "acessorio", label: "Acessório" },
+  { value: "outro", label: "Outro" },
+];
